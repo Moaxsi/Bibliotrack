@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "regions": ["iad1"],
+  "functions": { "api/index.mjs": { "maxDuration": 30 } },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index?route=:path*" },
+    { "source": "/uploads/:id", "destination": "/api/index?route=uploads/:id" }
+  ],
+  "redirects": [
+    { "source": "/admin.html", "destination": "/frontend/admin/admin.html", "permanent": false },
+    { "source": "/ventas.html", "destination": "/frontend/admin/ventas.html", "permanent": false },
+    { "source": "/Ventas.html", "destination": "/frontend/admin/ventas.html", "permanent": false },
+    { "source": "/productos.html", "destination": "/frontend/usuario/productos.html", "permanent": false },
+    { "source": "/carrito.html", "destination": "/frontend/usuario/carrito.html", "permanent": false },
+    { "source": "/contacto.html", "destination": "/frontend/usuario/contacto.html", "permanent": false },
+    { "source": "/login.html", "destination": "/frontend/auth/login.html", "permanent": false },
+    { "source": "/register.html", "destination": "/frontend/auth/register.html", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "X-Frame-Options", "value": "DENY" },
+      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+      { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" }
+    ] },
+    { "source": "/api/:path*", "headers": [ { "key": "Cache-Control", "value": "no-store" } ] }
+  ]
+}
