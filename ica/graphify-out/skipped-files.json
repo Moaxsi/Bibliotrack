@@ -1,0 +1,9 @@
+{
+  "reason": "Over 100 KB, skipped per user instruction",
+  "files": [
+    "target/classes/static/frontend/compartido/imagenes/portada.png",
+    "target/classes/static/frontend/compartido/imagenes/logo.png",
+    "src/main/resources/static/frontend/compartido/imagenes/portada.png",
+    "src/main/resources/static/frontend/compartido/imagenes/logo.png"
+  ]
+}

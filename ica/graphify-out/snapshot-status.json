@@ -1,0 +1,21 @@
+{
+  "status": "pre-redesign-snapshot",
+  "frontend_refresh_required": true,
+  "changed_after_extraction": [
+    "src/main/resources/static/frontend/admin/js/libros.js",
+    "src/main/resources/static/frontend/admin/js/ventas.js",
+    "src/main/resources/static/frontend/auth/js/autenticacion.js",
+    "src/main/resources/static/frontend/compartido/js/comun.js",
+    "src/main/resources/static/frontend/usuario/js/carrito.js",
+    "src/main/resources/static/frontend/usuario/js/catalogo.js",
+    "src/main/resources/static/frontend/usuario/js/contacto.js",
+    "src/main/resources/static/frontend/admin/admin.html",
+    "src/main/resources/static/frontend/admin/ventas.html",
+    "src/main/resources/static/frontend/auth/login.html",
+    "src/main/resources/static/frontend/auth/register.html",
+    "src/main/resources/static/frontend/usuario/carrito.html",
+    "src/main/resources/static/frontend/usuario/contacto.html",
+    "src/main/resources/static/frontend/usuario/productos.html",
+    "src/main/resources/static/index.html"
+  ]
+}

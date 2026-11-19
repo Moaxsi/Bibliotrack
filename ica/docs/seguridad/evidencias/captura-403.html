@@ -1,0 +1,22 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>BiblioTrack   Prueba obligatoria A01</title><style>body{font:18px/1.5 Arial,sans-serif;color:#000;background:#fff;margin:24px;max-width:65ch}h1{font-size:21px;margin:0 0 16px}pre{font:16px/1.5 Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}p{font-size:15px}</style><h1>BiblioTrack   Prueba obligatoria A01</h1><pre>Fecha: 2026-11-12T15:55:13
+Rol autenticado: CLIENTE
+
+SOLICITUD DIRECTA A LA API
+GET /api/usuarios HTTP/1.1
+Host: localhost:8082
+Authorization: Bearer [TOKEN CLIENTE OCULTO]
+
+RESPUESTA REAL
+HTTP/1.1 403
+WWW-Authenticate: Bearer error=&quot;insufficient_scope&quot;, error_description=&quot;The request requires higher privileges than provided by the access token.&quot;, error_uri=&quot;https://tools.ietf.org/html/rfc6750#section-3.1&quot;
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Length: 0
+[cuerpo vacío]
+
+Esperado: HTTP 403
+Observado: HTTP 403
+Resultado: APROBADO
+
+Control adicional: ADMIN obtiene HTTP 200.
+Sin token se obtiene HTTP 401.</pre><p>Fuente: api-despues.json; credencial JWT ocultada</p></html>

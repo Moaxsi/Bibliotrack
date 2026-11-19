@@ -1,0 +1,9 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Textos obligatorios y longitud</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Textos obligatorios y longitud</h1><pre>Prueba unitaria U07
+Resultado JUnit Surefire: APROBADA
+Tiempo: 0.0 s
+Sin Spring Boot y sin PostgreSQL</pre><pre class="code">45  void textoRechazaAusenciaBlancosYLongitudExcesiva() {
+46      assertEquals(&quot;Libro&quot;, Reglas.texto(Map.of(&quot;titulo&quot;, &quot; Libro &quot;), &quot;titulo&quot;, 5));
+47      rechaza400(() -&gt; Reglas.texto(Map.of(), &quot;titulo&quot;, 5));
+48      rechaza400(() -&gt; Reglas.texto(Map.of(&quot;titulo&quot;, &quot; &quot;), &quot;titulo&quot;, 5));
+49      rechaza400(() -&gt; Reglas.texto(Map.of(&quot;titulo&quot;, &quot;123456&quot;), &quot;titulo&quot;, 5));
+50  }</pre><small>validacion/ReglasTest.java; extracto de código real. Resultado: TEST-com.bibliotrack.ica.validacion.ReglasTest.xml</small></html>

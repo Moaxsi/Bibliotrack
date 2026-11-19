@@ -1,0 +1,128 @@
+{
+  "fecha": "2026-11-12T15:54:14.904330-05:00",
+  "base_url": "http://localhost:8081",
+  "casos": [
+    {
+      "rol": "INVITADO",
+      "metodo": "GET",
+      "ruta": "/api/libros",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "bytes_respuesta": 22917
+    },
+    {
+      "rol": "INVITADO",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true,
+      "bytes_respuesta": 0
+    },
+    {
+      "rol": "CLIENTE",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "bytes_respuesta": 0,
+      "peticion": "GET /api/usuarios HTTP/1.1\nHost: localhost:8081\nAuthorization: Bearer [TOKEN CLIENTE OCULTO]",
+      "respuesta": "HTTP/1.1 403\nVary: Origin\nWWW-Authenticate: Bearer error=\"insufficient_scope\", error_description=\"The request requires higher privileges than provided by the access token.\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"\nX-Content-Type-Options: nosniff\nX-XSS-Protection: 0\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\nPragma: no-cache\nExpires: 0\nX-Frame-Options: DENY\nContent-Length: 0\nDate: Thu, 12 Nov 2026 20:54:14 GMT\nConnection: close\n\n[cuerpo vacío]"
+    },
+    {
+      "rol": "CLIENTE",
+      "metodo": "GET",
+      "ruta": "/api/roles",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "bytes_respuesta": 0
+    },
+    {
+      "rol": "CLIENTE",
+      "metodo": "GET",
+      "ruta": "/api/ventas",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "bytes_respuesta": 0
+    },
+    {
+      "rol": "CLIENTE",
+      "metodo": "POST",
+      "ruta": "/api/libros",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "bytes_respuesta": 0
+    },
+    {
+      "rol": "CLIENTE",
+      "metodo": "GET",
+      "ruta": "/api/mis-compras",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "bytes_respuesta": 306
+    },
+    {
+      "rol": "ADMIN",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "bytes_respuesta": 962
+    },
+    {
+      "rol": "ADMIN",
+      "metodo": "GET",
+      "ruta": "/api/roles",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "bytes_respuesta": 203
+    },
+    {
+      "rol": "ADMIN",
+      "metodo": "GET",
+      "ruta": "/api/ventas",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "bytes_respuesta": 1238
+    },
+    {
+      "rol": "JWT ALTERADO",
+      "metodo": "GET",
+      "ruta": "/api/mis-compras",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true
+    }
+  ],
+  "cabeceras": {
+    "Last-Modified": "Thu, 12 Nov 2026 20:53:50 GMT",
+    "Accept-Ranges": "bytes",
+    "X-Content-Type-Options": "nosniff",
+    "X-XSS-Protection": "0",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+    "X-Frame-Options": "DENY",
+    "Content-Type": "text/html",
+    "Content-Language": "es-US",
+    "Content-Length": "6248",
+    "Date": "Thu, 12 Nov 2026 20:54:14 GMT",
+    "Connection": "close"
+  },
+  "cors": {
+    "origen": "https://origen-no-autorizado.example",
+    "status": 200,
+    "allow_origin": "*"
+  },
+  "total": 11,
+  "aprobados": 11
+}

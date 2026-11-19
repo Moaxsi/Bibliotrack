@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#edf2ec">
+  <title>Contacto · BiblioTrack</title>
+  <script src="/frontend/compartido/js/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/compartido/css/estilo.css">
+  <script defer src="/frontend/compartido/vendor/motion-14.6.0.js"></script>
+  <script type="module" src="/frontend/compartido/js/interfaz.js"></script>
+  <link rel="stylesheet" href="/frontend/compartido/css/navegacion.css">
+<link rel="stylesheet" href="/frontend/compartido/css/requisitos.css">
+  <script type="module" src="/frontend/compartido/js/navegacion.js"></script>
+</head><body><a class="skip-link" href="#contenido">Ir al contenido</a><header class="main-navbar"><div class="navbar-container"><a class="navbar-brand" href="/frontend/usuario/productos.html"><span class="brand-symbol"><img class="brand-logo brand-logo-light" src="/frontend/compartido/imagenes/logo_blanco.png" alt="" width="56" height="50"><img class="brand-logo brand-logo-dark" src="/frontend/compartido/imagenes/logo_oscuro.png" alt="" width="56" height="50"></span><span class="brand-copy"><strong>BiblioTrack</strong><small>Tu siguiente historia.</small></span></a><nav class="navbar-links" aria-label="Navegación principal"><a href="/frontend/usuario/productos.html" class="nav-link"  >Catálogo</a><a href="/frontend/usuario/historial.html" class="nav-link">Historial</a><a href="/frontend/usuario/contacto.html" class="nav-link active"  aria-current="page">Contacto</a><a href="/frontend/admin/admin.html" class="nav-link admin-only-link" hidden >Inventario</a><a href="/frontend/admin/ventas.html" class="nav-link admin-only-link" hidden >Reporte</a><a href="/frontend/admin/usuarios.html" class="nav-link admin-only-link" hidden>Usuarios</a></nav><div class="navbar-user-actions"><button type="button" class="theme-toggle" aria-label="Activar tema oscuro" aria-pressed="false" title="Cambiar tema"><span class="theme-orbit"><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.5A8.5 8.5 0 0 1 10.5 3a8.5 8.5 0 1 0 10 10.5Z"/></svg></span></button><a href="/frontend/usuario/carrito.html" class="btn-cart-link" aria-label="Ver carrito"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h2l2 11h10l2-8H7"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-label">Carrito</span><span id="cart-counter" class="cart-counter">0</span></a><div id="auth-buttons-wrapper"></div></div></div></header>  <main id="contenido" class="page-container contact-page-container">
+    <div class="contact-header-text" data-reveal>
+      <div class="eyebrow">ESTAMOS PARA AYUDARTE</div><h1>Conversemos entre libros.</h1>
+      <p>Nuestro equipo bibliotecario está listo para orientarte con disponibilidad de stock, autores y pedidos.</p>
+    </div>
+
+    <div class="contact-grid-layout">
+      <div class="contact-info-cards">
+        <div class="contact-detail-card" data-reveal>
+          <div class="contact-badge-circle">Sede</div>
+          <div>
+            <h4>Biblioteca Central</h4>
+            <p>Ica, Perú. Atención presencial y entregas en mostrador.</p>
+          </div>
+        </div>
+
+        <div class="contact-detail-card" data-reveal>
+          <div class="contact-badge-circle">Horario</div>
+          <div>
+            <h4>Horario de Atención</h4>
+            <p>Lunes a Viernes: 8:00 AM - 7:00 PM<br>Sábados: 9:00 AM - 1:00 PM</p>
+          </div>
+        </div>
+
+        <div class="contact-detail-card" data-reveal>
+          <div class="contact-badge-circle">Email</div>
+          <div>
+            <h4>Consultas Directas</h4>
+            <p>soporte@bibliotrack.com<br>ventas@bibliotrack.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card" data-reveal>
+        <h3>Envíanos un Mensaje</h3>
+        <form id="form-contacto" class="contact-form" onsubmit="enviarMensajeContacto(event)">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="cont-nombre">Tu Nombre</label>
+              <input type="text" id="cont-nombre" required placeholder="Ej. Carlos Mendoza">
+            </div>
+            <div class="form-group">
+              <label for="cont-email">Correo Electrónico</label>
+              <input type="email" id="cont-email" required placeholder="correo@ejemplo.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cont-asunto">Motivo de la Consulta</label>
+            <select id="cont-asunto" required>
+              <option value="" disabled selected>Selecciona un motivo...</option>
+              <option value="Consulta de Disponibilidad / Stock">Consulta de Disponibilidad / Stock</option>
+              <option value="Solicitud de Libro Especial">Solicitud de Título no Listado</option>
+              <option value="Estado de Compra o Pedido">Estado de mi Pedido</option>
+              <option value="Sugerencia o Reclamo">Sugerencia o Consulta General</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cont-mensaje">Mensaje o Detalle del Libro</label>
+            <textarea id="cont-mensaje" rows="4" required placeholder="Indícanos el título, autor o tu consulta detallada..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-contact-submit" id="btn-enviar-contacto">Enviar Mensaje</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+<footer class="site-footer"><span>BiblioTrack <span class="footer-dot">·</span> Libros siempre a tu alcance.</span><span>Ica, Perú</span></footer><div id="toast-box" role="status" aria-live="polite" aria-atomic="false"></div><script type="module" src="/frontend/usuario/js/contacto.js"></script></body></html>

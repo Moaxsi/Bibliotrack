@@ -1,0 +1,9 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Cabeceras HTTP y permiso CORS</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Cabeceras HTTP y permiso CORS</h1><pre>GET /   HTTP 200
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Security-Policy:
+default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; https://fonts.gstatic.com data:; img-src &#x27;self&#x27; https: data:; connect-src &#x27;self&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;self&#x27;; frame-ancestors &#x27;none&#x27;; form-action &#x27;self&#x27;
+
+GET /api/libros con Origin externo
+HTTP 200
+Access-Control-Allow-Origin: ausente</pre><small>Respuesta real. HTTP 200 en recurso público sin conceder permiso CORS.</small></html>

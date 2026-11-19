@@ -1,0 +1,198 @@
+{
+  "node_count": 304,
+  "unverified_node_count": 0,
+  "raw_edge_count": 690,
+  "non_object_edges": 0,
+  "missing_endpoint_edges": 0,
+  "dangling_endpoint_edges": 81,
+  "external_reference_edges": 0,
+  "self_loop_edges": 0,
+  "valid_candidate_edges": 609,
+  "exact_duplicate_edges": 0,
+  "directed_unique_endpoint_pairs": 567,
+  "directed_same_endpoint_collapsed_edges": 42,
+  "undirected_unique_endpoint_pairs": 567,
+  "undirected_same_endpoint_collapsed_edges": 42,
+  "same_endpoint_group_count": 40,
+  "relation_variant_groups": 10,
+  "source_file_variant_groups": 0,
+  "source_location_variant_groups": 9,
+  "context_variant_groups": 21,
+  "post_build_graph_type": "Graph",
+  "post_build_node_count": 344,
+  "post_build_edge_count": 641,
+  "post_build_error": "",
+  "producer_suppression": {
+    "path": "/tmp/bibliotrack-tools/lib/python3.12/site-packages/graphify/extract.py",
+    "total_sites": 12,
+    "sites": [
+      {
+        "line": 1814,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids = {n[\"id\"] for n in nodes}"
+      },
+      {
+        "line": 2378,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids = {n[\"id\"] for n in nodes}"
+      },
+      {
+        "line": 2380,
+        "name": "seen_doc_refs",
+        "tuple_arity": 0,
+        "sample": "seen_doc_refs: set[str] = set()"
+      },
+      {
+        "line": 3047,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids: set[str] = {n[\"id\"] for n in nodes}"
+      },
+      {
+        "line": 3194,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids = {n.get(\"id\") for n in nodes}"
+      },
+      {
+        "line": 4223,
+        "name": "seen_keys",
+        "tuple_arity": 0,
+        "sample": "seen_keys: set[tuple] = set()"
+      },
+      {
+        "line": 4409,
+        "name": "seen_keys",
+        "tuple_arity": 0,
+        "sample": "seen_keys: set[tuple] = set()"
+      },
+      {
+        "line": 7740,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids: set[str] = set()"
+      },
+      {
+        "line": 7848,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids: set[str] = set()"
+      },
+      {
+        "line": 7927,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids: set[str] = set()"
+      },
+      {
+        "line": 8442,
+        "name": "seen_ids",
+        "tuple_arity": 0,
+        "sample": "seen_ids: set[str] = set()"
+      },
+      {
+        "line": 8443,
+        "name": "seen_edges",
+        "tuple_arity": 4,
+        "sample": "seen_edges: set[tuple[str, str, str, str | None]] = set()"
+      }
+    ],
+    "error": ""
+  },
+  "examples": [
+    {
+      "source": "src_main_resources_static_frontend_admin_js_libros",
+      "target": "src_main_resources_static_frontend_compartido_js_comun",
+      "edge_count": 3,
+      "relations": [
+        "imports_from"
+      ],
+      "source_files": [
+        "src/main/resources/static/frontend/admin/js/libros.js"
+      ],
+      "source_locations": [
+        "L1",
+        "L2",
+        "L4"
+      ],
+      "contexts": [
+        "import"
+      ]
+    },
+    {
+      "source": "src_main_resources_static_frontend_admin_js_ventas",
+      "target": "src_main_resources_static_frontend_compartido_js_comun",
+      "edge_count": 3,
+      "relations": [
+        "imports_from"
+      ],
+      "source_files": [
+        "src/main/resources/static/frontend/admin/js/ventas.js"
+      ],
+      "source_locations": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "contexts": [
+        "import"
+      ]
+    },
+    {
+      "source": "mvnw",
+      "target": "mvnw_native_path",
+      "edge_count": 2,
+      "relations": [
+        "defines"
+      ],
+      "source_files": [
+        "mvnw"
+      ],
+      "source_locations": [
+        "L11",
+        "L7"
+      ],
+      "contexts": [
+        ""
+      ]
+    },
+    {
+      "source": "mvnw",
+      "target": "mvnw_verbose",
+      "edge_count": 2,
+      "relations": [
+        "defines"
+      ],
+      "source_files": [
+        "mvnw"
+      ],
+      "source_locations": [
+        "L59",
+        "L60"
+      ],
+      "contexts": [
+        ""
+      ]
+    },
+    {
+      "source": "src_main_java_com_bibliotrack_ica_controller_appcontroller",
+      "target": "src_main_java_com_bibliotrack_ica_modelo_categoria_categoria",
+      "edge_count": 2,
+      "relations": [
+        "imports"
+      ],
+      "source_files": [
+        "src/main/java/com/bibliotrack/ica/controller/AppController.java"
+      ],
+      "source_locations": [
+        "L3"
+      ],
+      "contexts": [
+        "",
+        "import"
+      ]
+    }
+  ]
+}

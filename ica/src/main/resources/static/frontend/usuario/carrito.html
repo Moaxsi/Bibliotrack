@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#edf2ec">
+  <title>Tu carrito · BiblioTrack</title>
+  <script src="/frontend/compartido/js/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/compartido/css/estilo.css">
+  <script defer src="/frontend/compartido/vendor/motion-14.6.0.js"></script>
+  <script type="module" src="/frontend/compartido/js/interfaz.js"></script>
+  <link rel="stylesheet" href="/frontend/compartido/css/navegacion.css">
+<link rel="stylesheet" href="/frontend/compartido/css/requisitos.css">
+  <script type="module" src="/frontend/compartido/js/navegacion.js"></script>
+</head><body><a class="skip-link" href="#contenido">Ir al contenido</a><header class="main-navbar"><div class="navbar-container"><a class="navbar-brand" href="/frontend/usuario/productos.html"><span class="brand-symbol"><img class="brand-logo brand-logo-light" src="/frontend/compartido/imagenes/logo_blanco.png" alt="" width="56" height="50"><img class="brand-logo brand-logo-dark" src="/frontend/compartido/imagenes/logo_oscuro.png" alt="" width="56" height="50"></span><span class="brand-copy"><strong>BiblioTrack</strong><small>Tu siguiente historia.</small></span></a><nav class="navbar-links" aria-label="Navegación principal"><a href="/frontend/usuario/productos.html" class="nav-link"  >Catálogo</a><a href="/frontend/usuario/historial.html" class="nav-link">Historial</a><a href="/frontend/usuario/contacto.html" class="nav-link"  >Contacto</a><a href="/frontend/admin/admin.html" class="nav-link admin-only-link" hidden >Inventario</a><a href="/frontend/admin/ventas.html" class="nav-link admin-only-link" hidden >Reporte</a><a href="/frontend/admin/usuarios.html" class="nav-link admin-only-link" hidden>Usuarios</a></nav><div class="navbar-user-actions"><button type="button" class="theme-toggle" aria-label="Activar tema oscuro" aria-pressed="false" title="Cambiar tema"><span class="theme-orbit"><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.5A8.5 8.5 0 0 1 10.5 3a8.5 8.5 0 1 0 10 10.5Z"/></svg></span></button><a href="/frontend/usuario/carrito.html" class="btn-cart-link" aria-label="Ver carrito"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h2l2 11h10l2-8H7"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-label">Carrito</span><span id="cart-counter" class="cart-counter">0</span></a><div id="auth-buttons-wrapper"></div></div></div></header>  <main id="contenido" class="page-container cart-page-container">
+    <div class="cart-header-title" data-reveal>
+      <div class="eyebrow">YA CASI SON TUYOS</div><h1>Tu próxima lectura te espera.</h1>
+      <p>Revisa tus libros seleccionados antes de completar el pedido.</p>
+    </div>
+
+    <div class="cart-classic-layout">
+      <section class="cart-items-section">
+        <div class="cart-table-card" data-reveal tabindex="0" role="region" aria-label="Libros del carrito, desplaza para ver todas las columnas">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Libro</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body">
+              <tr>
+                <td colspan="5" class="empty-table-cell">Cargando carrito...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cart-bottom-actions">
+          <a href="/frontend/usuario/productos.html" class="btn-secondary-link">&larr; Continuar Comprando</a>
+          <button type="button" class="btn-clean-cart" onclick="vaciarCarritoCompleto()">Vaciar Carrito</button>
+        </div>
+      </section>
+
+      <aside class="cart-summary-section">
+        <div class="cart-summary-card" data-reveal>
+          <h3>Resumen del Pedido</h3>
+          
+          <div class="summary-breakdown">
+            <div class="summary-line-item">
+              <span>Subtotal</span>
+              <strong id="cart-subtotal-val">S/ 0.00</strong>
+            </div>
+            <div class="summary-line-item">
+              <span>Envío / Despacho</span>
+              <span class="free-tag">Gratis</span>
+            </div>
+            <div class="summary-line-item total-highlight">
+              <span>Total a Pagar</span>
+              <strong id="cart-total-val">S/ 0.00</strong>
+            </div>
+          </div>
+
+          <div class="checkout-fields-group">
+            <div class="checkout-field">
+              <label for="order-metodo-pago">Método de Pago</label>
+              <select id="order-metodo-pago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta de Débito / Crédito</option>
+                <option value="Yape">Yape / QR</option>
+              </select>
+            </div>
+
+            <div class="checkout-field">
+              <label for="order-tipo-comprobante">Tipo de Comprobante</label>
+              <select id="order-tipo-comprobante">
+                <option value="Boleta">Boleta de Venta</option>
+                <option value="Factura">Factura</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="button" class="btn-checkout-action" id="btn-procesar-compra" onclick="ejecutarCompraFinal()">
+            Procesar Compra
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<footer class="site-footer"><span>BiblioTrack <span class="footer-dot">·</span> Libros siempre a tu alcance.</span><span>Ica, Perú</span></footer><div id="toast-box" role="status" aria-live="polite" aria-atomic="false"></div><script type="module" src="/frontend/usuario/js/carrito.js"></script></body></html>

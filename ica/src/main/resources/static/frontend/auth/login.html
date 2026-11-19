@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#159598">
+  <title>Iniciar sesión · BiblioTrack</title>
+  <script src="/frontend/compartido/js/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/compartido/css/estilo.css">
+  <link rel="stylesheet" href="/frontend/auth/css/acceso.css">
+  <script defer src="/frontend/compartido/vendor/motion-14.6.0.js"></script>
+  <script type="module" src="/frontend/compartido/js/interfaz.js"></script>
+  <script type="module" src="/frontend/auth/js/experiencia.js"></script>
+  <link rel="stylesheet" href="/frontend/compartido/css/navegacion.css">
+  <script type="module" src="/frontend/compartido/js/navegacion.js"></script>
+</head>
+<body class="access-page login-page">
+<a class="skip-link" href="#contenido">Ir al contenido</a>
+<header class="access-header">
+  <a class="access-brand" data-auth-link href="/index.html" aria-label="BiblioTrack, inicio"><span class="access-brand-mark"><img class="brand-logo brand-logo-light" src="/frontend/compartido/imagenes/logo_blanco.png" alt="" width="56" height="50"><img class="brand-logo brand-logo-dark" src="/frontend/compartido/imagenes/logo_oscuro.png" alt="" width="56" height="50"></span><span>BiblioTrack<span class="brand-period">.</span></span></a>
+  <nav class="access-header-actions" aria-label="Navegación principal"><button type="button" class="theme-toggle" aria-label="Activar tema oscuro" aria-pressed="false" title="Cambiar tema"><span class="theme-orbit"><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.5A8.5 8.5 0 0 1 10.5 3a8.5 8.5 0 1 0 10 10.5Z"/></svg></span></button><a class="explore-link" href="/frontend/usuario/productos.html?modo=invitado"><span>Explorar libros</span><svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></nav>
+</header>
+<main id="contenido" class="access-layout">
+  <section class="access-left" aria-label="Acceso a tu cuenta">
+    <div class="access-content"><nav class="auth-tabs" aria-label="Acceso a tu cuenta" data-auth-reveal><a data-auth-link href="/frontend/auth/login.html" aria-current="page">Iniciar sesión</a><a data-auth-link href="/frontend/auth/register.html" >Crear cuenta</a></nav>
+  <h1><span class="line-mask"><span data-title-line>Qué bueno</span></span><span class="line-mask"><span data-title-line>verte de nuevo.</span></span></h1>
+  <p class="auth-lead" data-auth-reveal>Entra a tu espacio. Tu siguiente lectura te está esperando.</p>
+  <form id="form-login" class="form-box"><div class="form-group" data-auth-reveal> <label for="login-email">Correo electrónico</label><input id="login-email" name="login-email" type="email" autocomplete="email" placeholder="nombre@correo.com" required  aria-describedby="err-login-email"><span class="error-text" id="err-login-email" aria-live="polite"></span></div><div class="form-group" data-auth-reveal> <label for="login-password">Contraseña</label><div class="password-field"><input id="login-password" name="login-password" type="password" autocomplete="current-password" placeholder="Tu contraseña" required  aria-describedby="err-login-password"><button type="button" class="password-toggle" data-password="login-password" aria-label="Mostrar contraseña" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="error-text" id="err-login-password" aria-live="polite"></span></div><button type="submit" class="auth-primary" id="btn-login"><span data-button-label>Iniciar sesión</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></form>
+  <p class="auth-form-feedback" id="auth-feedback" role="alert" hidden></p>
+  <p class="auth-alternative" data-auth-reveal>¿Tu primer capítulo aquí? <a data-auth-link href="/frontend/auth/register.html">Crea una cuenta</a></p></div>
+    <footer class="access-footer"><span>Libros siempre a tu alcance.</span><span>Ica, Perú</span></footer>
+  </section>
+  <section class="access-visual" aria-label="Un espacio para descubrir nuevas historias">
+    <div class="visual-photo"><img src="/frontend/compartido/imagenes/portada.png" alt="Estanterías iluminadas de una biblioteca, llenas de libros" fetchpriority="high"></div>
+    <div class="visual-shade" aria-hidden="true"></div>
+    <div class="visual-curtain" aria-hidden="true"></div>
+    <div class="visual-editorial" aria-hidden="true"><span>EL SIGUIENTE CAPÍTULO ES TUYO</span><span class="editorial-rule"></span><span>02 / 03</span></div>
+    <div class="visual-caption"><span class="visual-bookmark" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14M6 9h3M15 9h3"/></svg></span><h2><span class="line-mask"><span data-visual-line>Hay historias</span></span><span class="line-mask"><span data-visual-line>que te encuentran.</span></span></h2><p data-visual-reveal>Abre un libro. Haz espacio para otro mundo.</p><a class="visual-discover" href="/frontend/usuario/productos.html" data-visual-reveal>Encuentra la tuya <span><svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span></a></div>
+    <div class="visual-footnote"><span>LEE. IMAGINA. VUELVE.</span><span>BIBLIOTRACK</span></div>
+  </section>
+</main>
+<div class="access-success" hidden role="status" aria-live="polite"><div class="success-content"><svg class="success-check" viewBox="0 0 80 80" fill="none" aria-hidden="true"><circle cx="40" cy="40" r="36"/><path d="m24 40 11 11 23-23"/></svg><h2 id="success-title">Todo listo.</h2><p id="success-description">Entrando a tu biblioteca…</p></div></div>
+<div id="toast-box" role="status" aria-live="polite" aria-atomic="false"></div>
+<script type="module" src="/frontend/auth/js/autenticacion.js"></script>
+</body>
+</html>

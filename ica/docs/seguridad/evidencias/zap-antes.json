@@ -1,0 +1,301 @@
+{
+	"@programName": "ZAP",
+	"@version": "2.17.0",
+	"@generated": "Thu, 12 Nov 2026 15:52:32",
+	"created": "2026-11-12T20:52:32.362244Z",
+	"insights":[
+		{
+			"level": "Low",
+			"reason": "Warning",
+			"site": "",
+			"key": "insight.log.warn",
+			"description": "ZAP warnings logged - see the zap.log file for details",
+			"statistic": "1"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.code.2xx",
+			"description": "Percentage of responses with status code 2xx",
+			"statistic": "76"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.code.4xx",
+			"description": "Percentage of responses with status code 4xx",
+			"statistic": "23"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.ctype.application/json",
+			"description": "Percentage of endpoints with content type application/json",
+			"statistic": "10"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.ctype.image/png",
+			"description": "Percentage of endpoints with content type image/png",
+			"statistic": "6"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.ctype.text/css",
+			"description": "Percentage of endpoints with content type text/css",
+			"statistic": "8"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.ctype.text/html",
+			"description": "Percentage of endpoints with content type text/html",
+			"statistic": "25"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.ctype.text/javascript",
+			"description": "Percentage of endpoints with content type text/javascript",
+			"statistic": "40"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.method.GET",
+			"description": "Percentage of endpoints with method GET",
+			"statistic": "100"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8081",
+			"key": "insight.endpoint.total",
+			"description": "Count of total endpoints",
+			"statistic": "47"
+		}
+	],
+	"site":[ 
+		{
+			"@name": "http://localhost:8081",
+			"@host": "localhost",
+			"@port": "8081",
+			"@ssl": "false",
+			"alerts": [ 
+				{
+					"pluginid": "10038",
+					"alertRef": "10038-1",
+					"alert": "Content Security Policy (CSP) Header Not Set",
+					"name": "Content Security Policy (CSP) Header Not Set",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "0",
+							"uri": "http://localhost:8081/",
+							"nodeName": "http:\/\/localhost:8081\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "4",
+							"uri": "http://localhost:8081/frontend/admin/ventas.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/admin\/ventas.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "6",
+							"uri": "http://localhost:8081/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "3",
+							"uri": "http://localhost:8081/frontend/auth/register.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/auth\/register.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						},
+						{
+							"id": "5",
+							"uri": "http://localhost:8081/index.html",
+							"nodeName": "http:\/\/localhost:8081\/index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP</p><p>https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</p><p>https://www.w3.org/TR/CSP/</p><p>https://w3c.github.io/webappsec-csp/</p><p>https://web.dev/articles/csp</p><p>https://caniuse.com/#feat=contentsecuritypolicy</p><p>https://content-security-policy.com/</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "90003",
+					"alertRef": "90003",
+					"alert": "Sub Resource Integrity Attribute Missing",
+					"name": "Sub Resource Integrity Attribute Missing",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>The integrity attribute is missing on a script or link tag served by an external server. The integrity tag prevents an attacker who have gained access to this server from injecting a malicious content.</p>",
+					"instances":[ 
+						{
+							"id": "1",
+							"uri": "http://localhost:8081/",
+							"nodeName": "http:\/\/localhost:8081\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "12",
+							"uri": "http://localhost:8081/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "7",
+							"uri": "http://localhost:8081/frontend/auth/register.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/auth\/register.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "14",
+							"uri": "http://localhost:8081/frontend/usuario/productos.html",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/usuario\/productos.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "11",
+							"uri": "http://localhost:8081/index.html",
+							"nodeName": "http:\/\/localhost:8081\/index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Provide a valid integrity attribute to the tag.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity</p>",
+					"cweid": "345",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "10096",
+					"alertRef": "10096",
+					"alert": "Timestamp Disclosure - Unix",
+					"name": "Timestamp Disclosure - Unix",
+					"riskcode": "1",
+					"confidence": "1",
+					"riskdesc": "Low (Low)",
+					"desc": "<p>A timestamp was disclosed by the application/web server. - Unix</p>",
+					"instances":[ 
+						{
+							"id": "2",
+							"uri": "http://localhost:8081/api/libros",
+							"nodeName": "http:\/\/localhost:8081\/api\/libros",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "1644736623",
+							"otherinfo": "1644736623, which evaluates to: 2022-02-13 02:17:03."
+						}
+					],
+					"count": "1",
+					"systemic": true,
+					"solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>",
+					"otherinfo": "<p>1644736623, which evaluates to: 2022-02-13 02:17:03.</p>",
+					"reference": "<p>https://cwe.mitre.org/data/definitions/200.html</p>",
+					"cweid": "497",
+					"wascid": "13",
+					"sourceid": "5"
+				},
+				{
+					"pluginid": "10027",
+					"alertRef": "10027",
+					"alert": "Information Disclosure - Suspicious Comments",
+					"name": "Information Disclosure - Suspicious Comments",
+					"riskcode": "0",
+					"confidence": "1",
+					"riskdesc": "Informational (Low)",
+					"desc": "<p>The response appears to contain suspicious comments which may help an attacker.</p>",
+					"instances":[ 
+						{
+							"id": "47",
+							"uri": "http://localhost:8081/frontend/compartido/vendor/motion-14.6.0.js",
+							"nodeName": "http:\/\/localhost:8081\/frontend\/compartido\/vendor\/motion-14.6.0.js",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "user",
+							"otherinfo": "The following pattern was used: \\bUSER\\b and was detected in likely comment: \"//motion.dev/troubleshooting/${e}`:t}(e,n)),y.add(e))}const x=(t,e,n)=>{const i=e-t;return((n-t)%i+i)%i+t},w=(t,e,n)=>t*(3*(1-t)\", see evidence field for the suspicious comment/snippet."
+						}
+					],
+					"count": "1",
+					"systemic": false,
+					"solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
+					"otherinfo": "<p>The following pattern was used: \\bUSER\\b and was detected in likely comment: \"//motion.dev/troubleshooting/${e}`:t}(e,n)),y.add(e))}const x=(t,e,n)=>{const i=e-t;return((n-t)%i+i)%i+t},w=(t,e,n)=>t*(3*(1-t)\", see evidence field for the suspicious comment/snippet.</p>",
+					"reference": "",
+					"cweid": "615",
+					"wascid": "13",
+					"sourceid": "101"
+				}
+			]
+		}
+	],
+	"sequences":[
+	]
+
+}

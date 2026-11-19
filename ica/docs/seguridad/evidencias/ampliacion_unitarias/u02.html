@@ -1,0 +1,14 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Identidad JWT y rechazo de firma alterada</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Identidad JWT y rechazo de firma alterada</h1><pre>Prueba unitaria U02
+Resultado JUnit Surefire: APROBADA
+Tiempo: 0.002 s
+Sin Spring Boot y sin PostgreSQL</pre><pre class="code">54      var decoded = decoder.decode(token);
+55      assertEquals(&quot;cliente@example.com&quot;, decoded.getSubject());
+56      assertEquals(&quot;42&quot;, decoded.getClaimAsString(&quot;idUsuario&quot;));
+57      assertEquals(&quot;CLIENTE&quot;, decoded.getClaimAsStringList(&quot;roles&quot;).getFirst());
+58      assertTrue(decoded.getExpiresAt().isAfter(decoded.getIssuedAt()));
+59  
+60      int signatureStart = token.lastIndexOf(&#x27;.&#x27;) + 1;
+61      char replacement = token.charAt(signatureStart) == &#x27;A&#x27; ? &#x27;B&#x27; : &#x27;A&#x27;;
+62      String tampered = token.substring(0, signatureStart) + replacement + token.substring(signatureStart + 1);
+63      assertThrows(JwtException.class, () -&gt; decoder.decode(tampered));
+64  }</pre><small>seguridad/AuthenticationComponentsTest.java; extracto de código real. Resultado: TEST-com.bibliotrack.ica.seguridad.AuthenticationComponentsTest.xml</small></html>

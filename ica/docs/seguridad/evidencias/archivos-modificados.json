@@ -1,0 +1,25 @@
+{
+  "archivos": [
+    {
+      "archivo": "src/test/java/com/bibliotrack/ica/RequisitosIntegrationTest.java",
+      "sha256_antes": "621052a34b5a33d405bbe110fd85f50fb9a1c20207fb04800519b705fa33538f",
+      "sha256_despues": "5c4b7d331be55653ae2538c0dbbe11b50dff61229df89427360a610c1d40ec0f"
+    },
+    {
+      "archivo": "src/main/java/com/bibliotrack/ica/seguridad/SecurityConfig.java",
+      "sha256_antes": "1c0a485cab6e53abb0a06d945f0d9731c6f2c448ae5d50ab5eac500da478fd3e",
+      "sha256_despues": "3d36bee2105176a6b73160a1cd959ce048104b788437b6adf7a4964b5f164203"
+    },
+    {
+      "archivo": "src/main/java/com/bibliotrack/ica/controller/AppController.java",
+      "sha256_antes": "e71e256880f1233ba49b94e56696170d861a3e779a813dcf33d047319307cf59",
+      "sha256_despues": "a5689ce976e9882f72a37e830fa68ac6e2cbc217e67d1394419e215628048214"
+    },
+    {
+      "archivo": "pom.xml",
+      "sha256_antes": "293599650272754e53bb23b09b0a361fa3b9868bda730a162c1c91e084c8499b",
+      "sha256_despues": "7d0f763371b9bca09d58645fc2955b7d0cf1b0a3ae022044b53f1864bae469e1"
+    }
+  ],
+  "frontend_modificado": false
+}

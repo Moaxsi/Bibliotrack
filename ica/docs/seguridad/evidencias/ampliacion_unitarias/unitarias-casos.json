@@ -1,0 +1,82 @@
+[
+  {
+    "id": "U01",
+    "titulo": "Contraseña protegida con BCrypt",
+    "archivo": "src/test/java/com/bibliotrack/ica/seguridad/AuthenticationComponentsTest.java",
+    "metodo": "bcryptHashCanBeMatchedWithoutStoringTheOriginalPassword",
+    "inicio": 23,
+    "fin": 33,
+    "aprobada": true,
+    "tiempo": "0.199"
+  },
+  {
+    "id": "U02",
+    "titulo": "Identidad JWT y rechazo de firma alterada",
+    "archivo": "src/test/java/com/bibliotrack/ica/seguridad/AuthenticationComponentsTest.java",
+    "metodo": "jwtCarriesIdentityAndRoleAndRejectsTampering",
+    "inicio": 54,
+    "fin": 64,
+    "aprobada": true,
+    "tiempo": "0.002"
+  },
+  {
+    "id": "U03",
+    "titulo": "Límites de contraseña en bytes",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "passwordRechazaVaciasCortasYMasDe72Bytes",
+    "inicio": 12,
+    "fin": 18,
+    "aprobada": true,
+    "tiempo": "0.0"
+  },
+  {
+    "id": "U04",
+    "titulo": "Cantidades y desbordamiento",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "enteroRechazaCantidadesNegativasFraccionesYDesbordamiento",
+    "inicio": 21,
+    "fin": 26,
+    "aprobada": true,
+    "tiempo": "0.0"
+  },
+  {
+    "id": "U05",
+    "titulo": "Importes y precisión decimal",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "dineroRechazaImportesNegativosYPrecisionExcesiva",
+    "inicio": 29,
+    "fin": 34,
+    "aprobada": true,
+    "tiempo": "0.001"
+  },
+  {
+    "id": "U06",
+    "titulo": "Correo normalizado y formato",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "emailNormalizaYRechazaFormatoInvalido",
+    "inicio": 37,
+    "fin": 42,
+    "aprobada": true,
+    "tiempo": "0.0"
+  },
+  {
+    "id": "U07",
+    "titulo": "Textos obligatorios y longitud",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "textoRechazaAusenciaBlancosYLongitudExcesiva",
+    "inicio": 45,
+    "fin": 50,
+    "aprobada": true,
+    "tiempo": "0.0"
+  },
+  {
+    "id": "U08",
+    "titulo": "Diferencia entre stock y precio cero",
+    "archivo": "src/test/java/com/bibliotrack/ica/validacion/ReglasTest.java",
+    "metodo": "stockAdmiteCeroPeroPrecioPositivoLoRechaza",
+    "inicio": 53,
+    "fin": 57,
+    "aprobada": true,
+    "tiempo": "0.0"
+  }
+]

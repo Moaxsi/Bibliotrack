@@ -1,0 +1,20 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Acceso directo según el rol</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Acceso directo según el rol</h1><pre>S01   Rol: INVITADO
+GET /api/usuarios
+Authorization: sin token
+HTTP 401   Esperado: 401
+[cuerpo vacío]
+Resultado: APROBADO
+
+S02   Rol: CLIENTE
+GET /api/usuarios
+Authorization: Bearer [JWT OCULTO]
+HTTP 403   Esperado: 403
+[cuerpo vacío]
+Resultado: APROBADO
+
+S03   Rol: ADMIN
+GET /api/usuarios
+Authorization: Bearer [JWT OCULTO]
+HTTP 200   Esperado: 200
+[Listado administrativo recibido. Datos personales omitidos.]
+Resultado: APROBADO</pre><small>Solicitudes reales a localhost:8081; fuente seguridad-api.json</small></html>

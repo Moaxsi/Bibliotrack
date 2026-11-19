@@ -1,0 +1,15 @@
+{
+  "package": {
+    "package": {
+      "name": "motion",
+      "ecosystem": "npm"
+    },
+    "version": "14.6.0"
+  },
+  "archivo": "src/main/resources/static/frontend/compartido/vendor/motion-14.6.0.js",
+  "sha256": "5cd165acfdf8e14ca5358c3d876142e5465419ee0d100bcf195da474cf8db2bf",
+  "coincidencias_paquete_oficial": [
+    "package/dist/motion.js"
+  ],
+  "respuesta_osv": {}
+}

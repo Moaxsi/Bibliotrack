@@ -1,0 +1,232 @@
+{
+  "fecha": "2026-11-12T17:45:48.172012-05:00",
+  "casos": [
+    {
+      "id": "S01",
+      "rol": "INVITADO",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true,
+      "respuesta": "",
+      "cabeceras": {
+        "WWW-Authenticate": "Bearer resource_metadata=\"http://localhost:8081/.well-known/oauth-protected-resource\"",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Length": "0",
+        "Date": "Thu, 12 Nov 2026 22:45:47 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S02",
+      "rol": "CLIENTE",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "respuesta": "",
+      "cabeceras": {
+        "WWW-Authenticate": "Bearer error=\"insufficient_scope\", error_description=\"The request requires higher privileges than provided by the access token.\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Length": "0",
+        "Date": "Thu, 12 Nov 2026 22:45:47 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S03",
+      "rol": "ADMIN",
+      "metodo": "GET",
+      "ruta": "/api/usuarios",
+      "esperado": 200,
+      "observado": 200,
+      "aprobado": true,
+      "respuesta": "[Listado administrativo recibido. Datos personales omitidos.]",
+      "cabeceras": {
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Type": "application/json",
+        "Content-Length": "962",
+        "Date": "Thu, 12 Nov 2026 22:45:47 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S04",
+      "rol": "JWT ALTERADO",
+      "metodo": "GET",
+      "ruta": "/api/mis-compras",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true,
+      "respuesta": "",
+      "cabeceras": {
+        "WWW-Authenticate": "Bearer error=\"invalid_token\", error_description=\"An error occurred while attempting to decode the Jwt: Signed JWT rejected: Invalid signature\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\", resource_metadata=\"http://localhost:8081/.well-known/oauth-protected-resource\"",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Length": "0",
+        "Date": "Thu, 12 Nov 2026 22:45:47 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S05",
+      "rol": "CLIENTE",
+      "metodo": "POST",
+      "ruta": "/api/libros",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "respuesta": "",
+      "cabeceras": {
+        "WWW-Authenticate": "Bearer error=\"insufficient_scope\", error_description=\"The request requires higher privileges than provided by the access token.\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Length": "0",
+        "Date": "Thu, 12 Nov 2026 22:45:47 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S06",
+      "rol": "CLIENTE",
+      "metodo": "POST",
+      "ruta": "/api/ventas",
+      "esperado": 403,
+      "observado": 403,
+      "aprobado": true,
+      "respuesta": "{\"error\":\"Solo un administrador puede registrar ventas para otro cliente\"}",
+      "cabeceras": {
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Thu, 12 Nov 2026 22:45:48 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S07",
+      "rol": "SIN SESIÓN",
+      "metodo": "POST",
+      "ruta": "/api/login",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true,
+      "respuesta": "{\"error\":\"Credenciales incorrectas\"}",
+      "cabeceras": {
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Thu, 12 Nov 2026 22:45:48 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S08",
+      "rol": "CARGA DE INYECCIÓN",
+      "metodo": "POST",
+      "ruta": "/api/login",
+      "esperado": 401,
+      "observado": 401,
+      "aprobado": true,
+      "respuesta": "{\"error\":\"Credenciales incorrectas\"}",
+      "cabeceras": {
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Thu, 12 Nov 2026 22:45:48 GMT",
+        "Connection": "close"
+      }
+    },
+    {
+      "id": "S09",
+      "rol": "INVITADO",
+      "metodo": "GET",
+      "ruta": "/api/libros?buscar=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "esperado": 400,
+      "observado": 400,
+      "aprobado": true,
+      "respuesta": "{\"error\":\"buscar: usa hasta 200 caracteres\"}",
+      "cabeceras": {
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Date": "Thu, 12 Nov 2026 22:45:48 GMT",
+        "Connection": "close"
+      }
+    }
+  ],
+  "cabeceras_inicio": {
+    "Last-Modified": "Thu, 12 Nov 2026 20:53:50 GMT",
+    "Accept-Ranges": "bytes",
+    "X-Content-Type-Options": "nosniff",
+    "X-XSS-Protection": "0",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+    "Content-Type": "text/html",
+    "Content-Language": "es-US",
+    "Content-Length": "6248",
+    "Date": "Thu, 12 Nov 2026 22:45:48 GMT",
+    "Connection": "close"
+  },
+  "cors": {
+    "status": 200,
+    "allow_origin": null
+  }
+}

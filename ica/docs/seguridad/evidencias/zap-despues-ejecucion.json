@@ -1,0 +1,12 @@
+{
+  "scans": [
+    {
+      "reqCount": "311",
+      "alertCount": "1",
+      "progress": "100",
+      "newAlertCount": "1",
+      "id": "0",
+      "state": "FINISHED"
+    }
+  ]
+}

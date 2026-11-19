@@ -1,0 +1,495 @@
+{
+	"@programName": "ZAP",
+	"@version": "2.17.0",
+	"@generated": "Thu, 12 Nov 2026 15:55:19",
+	"created": "2026-11-12T20:55:19.197410Z",
+	"insights":[
+		{
+			"level": "Low",
+			"reason": "Warning",
+			"site": "",
+			"key": "insight.log.warn",
+			"description": "ZAP warnings logged - see the zap.log file for details",
+			"statistic": "1"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.code.2xx",
+			"description": "Percentage of responses with status code 2xx",
+			"statistic": "76"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.code.4xx",
+			"description": "Percentage of responses with status code 4xx",
+			"statistic": "23"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.ctype.application/json",
+			"description": "Percentage of endpoints with content type application/json",
+			"statistic": "10"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.ctype.image/png",
+			"description": "Percentage of endpoints with content type image/png",
+			"statistic": "6"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.ctype.text/css",
+			"description": "Percentage of endpoints with content type text/css",
+			"statistic": "8"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.ctype.text/html",
+			"description": "Percentage of endpoints with content type text/html",
+			"statistic": "25"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.ctype.text/javascript",
+			"description": "Percentage of endpoints with content type text/javascript",
+			"statistic": "40"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.method.GET",
+			"description": "Percentage of endpoints with method GET",
+			"statistic": "100"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8082",
+			"key": "insight.endpoint.total",
+			"description": "Count of total endpoints",
+			"statistic": "47"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8082",
+			"key": "insight.endpoint.method.GET",
+			"description": "Percentage of endpoints with method GET",
+			"statistic": "100"
+		},
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "https://localhost:8082",
+			"key": "insight.endpoint.total",
+			"description": "Count of total endpoints",
+			"statistic": "1"
+		}
+	],
+	"site":[ 
+		{
+			"@name": "https://localhost:8082",
+			"@host": "localhost",
+			"@port": "8082",
+			"@ssl": "true",
+			"alerts": [ 
+			]
+		},
+		{
+			"@name": "http://localhost:8082",
+			"@host": "localhost",
+			"@port": "8082",
+			"@ssl": "false",
+			"alerts": [ 
+				{
+					"pluginid": "10055",
+					"alertRef": "10055-4",
+					"alert": "CSP: Wildcard Directive",
+					"name": "CSP: Wildcard Directive",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "0",
+							"uri": "http://localhost:8082/",
+							"nodeName": "http:\/\/localhost:8082\/",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:\nimg-src"
+						},
+						{
+							"id": "10",
+							"uri": "http://localhost:8082/frontend/admin/ventas.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/ventas.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:\nimg-src"
+						},
+						{
+							"id": "5",
+							"uri": "http://localhost:8082/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:\nimg-src"
+						},
+						{
+							"id": "12",
+							"uri": "http://localhost:8082/frontend/auth/register.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/register.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:\nimg-src"
+						},
+						{
+							"id": "4",
+							"uri": "http://localhost:8082/index.html",
+							"nodeName": "http:\/\/localhost:8082\/index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:\nimg-src"
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "<p>The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined:</p><p>img-src</p>",
+					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "10055",
+					"alertRef": "10055-5",
+					"alert": "CSP: script-src unsafe-inline",
+					"name": "CSP: script-src unsafe-inline",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "1",
+							"uri": "http://localhost:8082/",
+							"nodeName": "http:\/\/localhost:8082\/",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "14",
+							"uri": "http://localhost:8082/frontend/admin/ventas.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/ventas.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "6",
+							"uri": "http://localhost:8082/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "16",
+							"uri": "http://localhost:8082/frontend/auth/register.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/register.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "script-src includes unsafe-inline."
+						},
+						{
+							"id": "8",
+							"uri": "http://localhost:8082/index.html",
+							"nodeName": "http:\/\/localhost:8082\/index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "script-src includes unsafe-inline."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "<p>script-src includes unsafe-inline.</p>",
+					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "10055",
+					"alertRef": "10055-6",
+					"alert": "CSP: style-src unsafe-inline",
+					"name": "CSP: style-src unsafe-inline",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+					"instances":[ 
+						{
+							"id": "2",
+							"uri": "http://localhost:8082/",
+							"nodeName": "http:\/\/localhost:8082\/",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "style-src includes unsafe-inline."
+						},
+						{
+							"id": "20",
+							"uri": "http://localhost:8082/frontend/admin/admin.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/admin.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "style-src includes unsafe-inline."
+						},
+						{
+							"id": "15",
+							"uri": "http://localhost:8082/frontend/admin/ventas.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/ventas.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "style-src includes unsafe-inline."
+						},
+						{
+							"id": "7",
+							"uri": "http://localhost:8082/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "style-src includes unsafe-inline."
+						},
+						{
+							"id": "9",
+							"uri": "http://localhost:8082/index.html",
+							"nodeName": "http:\/\/localhost:8082\/index.html",
+							"method": "GET",
+							"param": "Content-Security-Policy",
+							"attack": "",
+							"evidence": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+							"otherinfo": "style-src includes unsafe-inline."
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+					"otherinfo": "<p>style-src includes unsafe-inline.</p>",
+					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
+					"cweid": "693",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "10106",
+					"alertRef": "10106",
+					"alert": "HTTP Only Site",
+					"name": "HTTP Only Site",
+					"riskcode": "2",
+					"confidence": "2",
+					"riskdesc": "Medium (Medium)",
+					"desc": "<p>The site is only served under HTTP and not HTTPS.</p>",
+					"instances":[ 
+						{
+							"id": "94",
+							"uri": "http://localhost:8082/api/libros?buscar=prueba",
+							"nodeName": "https:\/\/localhost:8082\/api\/libros",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "",
+							"otherinfo": "Failed to connect.\nZAP attempted to connect via: https://localhost:8082/api/libros"
+						}
+					],
+					"count": "1",
+					"systemic": false,
+					"solution": "<p>Configure your web or application server to use SSL (https).</p>",
+					"otherinfo": "<p>Failed to connect.</p><p>ZAP attempted to connect via: https://localhost:8082/api/libros</p>",
+					"reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html</p><p>https://letsencrypt.org/</p>",
+					"cweid": "311",
+					"wascid": "4",
+					"sourceid": "338"
+				},
+				{
+					"pluginid": "90003",
+					"alertRef": "90003",
+					"alert": "Sub Resource Integrity Attribute Missing",
+					"name": "Sub Resource Integrity Attribute Missing",
+					"riskcode": "2",
+					"confidence": "3",
+					"riskdesc": "Medium (High)",
+					"desc": "<p>The integrity attribute is missing on a script or link tag served by an external server. The integrity tag prevents an attacker who have gained access to this server from injecting a malicious content.</p>",
+					"instances":[ 
+						{
+							"id": "3",
+							"uri": "http://localhost:8082/",
+							"nodeName": "http:\/\/localhost:8082\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "27",
+							"uri": "http://localhost:8082/frontend/admin/admin.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/admin.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "21",
+							"uri": "http://localhost:8082/frontend/admin/ventas.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/admin\/ventas.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "11",
+							"uri": "http://localhost:8082/frontend/auth/login.html",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/auth\/login.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						},
+						{
+							"id": "13",
+							"uri": "http://localhost:8082/index.html",
+							"nodeName": "http:\/\/localhost:8082\/index.html",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Provide a valid integrity attribute to the tag.</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity</p>",
+					"cweid": "345",
+					"wascid": "15",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "10096",
+					"alertRef": "10096",
+					"alert": "Timestamp Disclosure - Unix",
+					"name": "Timestamp Disclosure - Unix",
+					"riskcode": "1",
+					"confidence": "1",
+					"riskdesc": "Low (Low)",
+					"desc": "<p>A timestamp was disclosed by the application/web server. - Unix</p>",
+					"instances":[ 
+						{
+							"id": "17",
+							"uri": "http://localhost:8082/api/libros",
+							"nodeName": "http:\/\/localhost:8082\/api\/libros",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "1644736623",
+							"otherinfo": "1644736623, which evaluates to: 2022-02-13 02:17:03."
+						}
+					],
+					"count": "1",
+					"systemic": true,
+					"solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>",
+					"otherinfo": "<p>1644736623, which evaluates to: 2022-02-13 02:17:03.</p>",
+					"reference": "<p>https://cwe.mitre.org/data/definitions/200.html</p>",
+					"cweid": "497",
+					"wascid": "13",
+					"sourceid": "5"
+				},
+				{
+					"pluginid": "10027",
+					"alertRef": "10027",
+					"alert": "Information Disclosure - Suspicious Comments",
+					"name": "Information Disclosure - Suspicious Comments",
+					"riskcode": "0",
+					"confidence": "1",
+					"riskdesc": "Informational (Low)",
+					"desc": "<p>The response appears to contain suspicious comments which may help an attacker.</p>",
+					"instances":[ 
+						{
+							"id": "93",
+							"uri": "http://localhost:8082/frontend/compartido/vendor/motion-14.6.0.js",
+							"nodeName": "http:\/\/localhost:8082\/frontend\/compartido\/vendor\/motion-14.6.0.js",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "user",
+							"otherinfo": "The following pattern was used: \\bUSER\\b and was detected in likely comment: \"//motion.dev/troubleshooting/${e}`:t}(e,n)),y.add(e))}const x=(t,e,n)=>{const i=e-t;return((n-t)%i+i)%i+t},w=(t,e,n)=>t*(3*(1-t)\", see evidence field for the suspicious comment/snippet."
+						}
+					],
+					"count": "1",
+					"systemic": false,
+					"solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
+					"otherinfo": "<p>The following pattern was used: \\bUSER\\b and was detected in likely comment: \"//motion.dev/troubleshooting/${e}`:t}(e,n)),y.add(e))}const x=(t,e,n)=>{const i=e-t;return((n-t)%i+i)%i+t},w=(t,e,n)=>t*(3*(1-t)\", see evidence field for the suspicious comment/snippet.</p>",
+					"reference": "",
+					"cweid": "615",
+					"wascid": "13",
+					"sourceid": "115"
+				}
+			]
+		}
+	],
+	"sequences":[
+	]
+
+}

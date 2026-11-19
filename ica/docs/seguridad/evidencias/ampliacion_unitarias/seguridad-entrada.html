@@ -1,0 +1,13 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Carga de inyección y límite de búsqueda</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Carga de inyección y límite de búsqueda</h1><pre>S08   Rol: CARGA DE INYECCIÓN
+POST /api/login
+Authorization: sin token
+HTTP 401   Esperado: 401
+{&quot;error&quot;:&quot;Credenciales incorrectas&quot;}
+Resultado: APROBADO
+
+S09   Rol: INVITADO
+GET /api/libros?buscar=[201 letras A]
+Authorization: sin token
+HTTP 400   Esperado: 400
+{&quot;error&quot;:&quot;buscar: usa hasta 200 caracteres&quot;}
+Resultado: APROBADO</pre><small>Rechazo de estas cargas concretas; no acredita ausencia total de inyección.</small></html>

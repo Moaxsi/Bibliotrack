@@ -1,0 +1,158 @@
+{
+  "mvnw": {
+    "mtime": 1792116607.71876,
+    "seen": 1792932810.833299,
+    "ast_hash": "f57da3875de8d62c3ef55fa2cf1c5776",
+    "semantic_hash": "f57da3875de8d62c3ef55fa2cf1c5776"
+  },
+  "pom.xml": {
+    "mtime": 1792722429.5071337,
+    "seen": 1792932810.833303,
+    "ast_hash": "6082168090816da0a311c8aaaa225615",
+    "semantic_hash": "6082168090816da0a311c8aaaa225615"
+  },
+  "src/main/java/com/bibliotrack/ica/IcaApplication.java": {
+    "mtime": 1790140816.3493125,
+    "seen": 1792932810.8333042,
+    "ast_hash": "df0ff04f9a63ac19e00095f6d801b129",
+    "semantic_hash": "df0ff04f9a63ac19e00095f6d801b129"
+  },
+  "src/main/java/com/bibliotrack/ica/controller/AppController.java": {
+    "mtime": 1792722429.507317,
+    "seen": 1792932810.8333051,
+    "ast_hash": "6fff14c8bcc27bc7cd7a1792a073bcd3",
+    "semantic_hash": "6fff14c8bcc27bc7cd7a1792a073bcd3"
+  },
+  "src/main/java/com/bibliotrack/ica/controller/NavegacionController.java": {
+    "mtime": 1792116607.7347574,
+    "seen": 1792932810.833306,
+    "ast_hash": "bf4486348d0ea28487119536ad09ed09",
+    "semantic_hash": "bf4486348d0ea28487119536ad09ed09"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Categoria.java": {
+    "mtime": 1792114921.7627866,
+    "seen": 1792932810.833306,
+    "ast_hash": "53f8d8b7ae4ea9fcd0299947e5dee885",
+    "semantic_hash": "53f8d8b7ae4ea9fcd0299947e5dee885"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Contacto.java": {
+    "mtime": 1792114921.763804,
+    "seen": 1792932810.8333068,
+    "ast_hash": "70063a524670a9f98d28b005acebc2ff",
+    "semantic_hash": "70063a524670a9f98d28b005acebc2ff"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/DetalleVenta.java": {
+    "mtime": 1792114921.7644482,
+    "seen": 1792932810.8333068,
+    "ast_hash": "844d634186f91961f66fcd6d30c4982c",
+    "semantic_hash": "844d634186f91961f66fcd6d30c4982c"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Libro.java": {
+    "mtime": 1792114921.7649126,
+    "seen": 1792932810.833308,
+    "ast_hash": "a24e5db8035dd276ec090b5d138b9127",
+    "semantic_hash": "a24e5db8035dd276ec090b5d138b9127"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Rol.java": {
+    "mtime": 1792116607.733786,
+    "seen": 1792932810.833308,
+    "ast_hash": "643431b6ac75f1a07ad23d77bb7a9cc3",
+    "semantic_hash": "643431b6ac75f1a07ad23d77bb7a9cc3"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Usuario.java": {
+    "mtime": 1792722429.5080578,
+    "seen": 1792932810.833309,
+    "ast_hash": "e142596131ac1c883f3594e053c5e02a",
+    "semantic_hash": "e142596131ac1c883f3594e053c5e02a"
+  },
+  "src/main/java/com/bibliotrack/ica/modelo/Venta.java": {
+    "mtime": 1792114921.7676466,
+    "seen": 1792932810.833309,
+    "ast_hash": "c07f4d71076bf286120e9db77f4731fa",
+    "semantic_hash": "c07f4d71076bf286120e9db77f4731fa"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/CategoriaRepository.java": {
+    "mtime": 1792114921.763438,
+    "seen": 1792932810.83331,
+    "ast_hash": "ff347fa06f3ee1598992e745b5197599",
+    "semantic_hash": "ff347fa06f3ee1598992e745b5197599"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/ContactoRepository.java": {
+    "mtime": 1792114921.7641966,
+    "seen": 1792932810.83331,
+    "ast_hash": "8f648cca46e6b88953393c170b17efe0",
+    "semantic_hash": "8f648cca46e6b88953393c170b17efe0"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/DetalleVentaRepository.java": {
+    "mtime": 1792114921.7646308,
+    "seen": 1792932810.833311,
+    "ast_hash": "db2d0090920692c032f7d805593bd04f",
+    "semantic_hash": "db2d0090920692c032f7d805593bd04f"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/LibroRepository.java": {
+    "mtime": 1792114921.7651584,
+    "seen": 1792932810.833311,
+    "ast_hash": "40f5bc77190d1d54e6d64cc16568a967",
+    "semantic_hash": "40f5bc77190d1d54e6d64cc16568a967"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/RolRepository.java": {
+    "mtime": 1792114921.766623,
+    "seen": 1792932810.833311,
+    "ast_hash": "a0f1fb50dbedc92b12c4907d17ec6402",
+    "semantic_hash": "a0f1fb50dbedc92b12c4907d17ec6402"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/UsuarioRepository.java": {
+    "mtime": 1792722429.5081978,
+    "seen": 1792932810.833312,
+    "ast_hash": "b93c732390d5eac513a76fe043cfd992",
+    "semantic_hash": "b93c732390d5eac513a76fe043cfd992"
+  },
+  "src/main/java/com/bibliotrack/ica/repositorio/VentaRepository.java": {
+    "mtime": 1792114921.7678823,
+    "seen": 1792932810.833312,
+    "ast_hash": "44039c02d68cb9d93c7bee3a99e35b8b",
+    "semantic_hash": "44039c02d68cb9d93c7bee3a99e35b8b"
+  },
+  "src/main/java/com/bibliotrack/ica/seguridad/JwtTokenService.java": {
+    "mtime": 1792722429.508346,
+    "seen": 1792932810.833313,
+    "ast_hash": "450f6f5756e435155a7963638828c8f3",
+    "semantic_hash": "450f6f5756e435155a7963638828c8f3"
+  },
+  "src/main/java/com/bibliotrack/ica/seguridad/SecurityConfig.java": {
+    "mtime": 1792722429.5084577,
+    "seen": 1792932810.833313,
+    "ast_hash": "c1ff72d736cd905d888fff2378f78e23",
+    "semantic_hash": "c1ff72d736cd905d888fff2378f78e23"
+  },
+  "src/main/java/com/bibliotrack/ica/seguridad/UploadedImageConfig.java": {
+    "mtime": 1792722429.5085497,
+    "seen": 1792932810.833314,
+    "ast_hash": "bd0b638b8e276553314fc49bf1d23ea2",
+    "semantic_hash": "bd0b638b8e276553314fc49bf1d23ea2"
+  },
+  "src/main/resources/static/frontend/compartido/js/categorias.js": {
+    "mtime": 1792114921.7751162,
+    "seen": 1792932810.833314,
+    "ast_hash": "f22f3cff666a5fed105e18b4f1ede54c",
+    "semantic_hash": "f22f3cff666a5fed105e18b4f1ede54c"
+  },
+  "src/test/java/com/bibliotrack/ica/IcaApplicationTests.java": {
+    "mtime": 1790128130.2779312,
+    "seen": 1792932810.8333151,
+    "ast_hash": "061ab3680ace8ac988ea9645abc411ab",
+    "semantic_hash": "061ab3680ace8ac988ea9645abc411ab"
+  },
+  "src/test/java/com/bibliotrack/ica/seguridad/AuthenticationComponentsTest.java": {
+    "mtime": 1792722429.51164,
+    "seen": 1792932810.8333151,
+    "ast_hash": "778d81bace70ad28c6429550f904c3da",
+    "semantic_hash": "778d81bace70ad28c6429550f904c3da"
+  },
+  "README.md": {
+    "mtime": 1792904043.85369,
+    "seen": 1792932810.833316,
+    "ast_hash": "44179e66c622ad309ac5d20a330bc3ea",
+    "semantic_hash": "44179e66c622ad309ac5d20a330bc3ea"
+  }
+}

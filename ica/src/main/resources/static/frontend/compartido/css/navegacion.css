@@ -1,0 +1,58 @@
+:root {
+  --route-duration: 460ms;
+  --route-exit: 240ms;
+  --route-ease: cubic-bezier(.22, 1, .36, 1);
+}
+html[data-route-transition] { --route-distance: 36px; }
+html[data-route-direction="back"] { --route-distance: -36px; }
+html[data-route-transition]::view-transition { pointer-events: none; }
+html[data-route-transition]::view-transition-group(*) { animation-duration: var(--route-duration); animation-timing-function: var(--route-ease); }
+html[data-route-transition]::view-transition-old(root) { animation: route-canvas-out 200ms ease-out both; }
+html[data-route-transition]::view-transition-new(root) { animation: route-canvas-in 260ms ease-out both; }
+html[data-route-transition]::view-transition-old(route-main) { animation: route-out var(--route-exit) ease-in both; }
+html[data-route-transition]::view-transition-new(route-main) { animation: route-in var(--route-duration) var(--route-ease) both; }
+html[data-route-transition]::view-transition-old(route-header),
+html[data-route-transition]::view-transition-new(route-header),
+html[data-route-transition]::view-transition-old(route-visual),
+html[data-route-transition]::view-transition-new(route-visual),
+html[data-route-transition]::view-transition-old(route-tab),
+html[data-route-transition]::view-transition-new(route-tab) { mix-blend-mode: normal; animation-duration: 240ms; }
+html[data-route-transition="acceso"]::view-transition-old(route-main) { animation-name: route-auth-out; }
+html[data-route-transition="acceso"]::view-transition-new(route-main) { animation-name: route-auth-in; }
+html[data-route-transition="portada"]::view-transition-new(route-main) { animation: route-cover-in 520ms var(--route-ease) both; }
+html[data-route-transition="portada"]::view-transition-old(route-main) { animation: route-cover-out 320ms ease-in both; }
+main[data-route-focus]:focus { outline: none; }
+a[aria-busy="true"] { cursor: progress; }
+@keyframes route-canvas-out { to { opacity: 0; } }
+@keyframes route-canvas-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes route-out {
+  from { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  to { opacity: 0; transform: translate3d(calc(var(--route-distance) * -.5), -12px, 0) scale(.985); }
+}
+@keyframes route-in {
+  from { opacity: 0; transform: translate3d(var(--route-distance), 30px, 0) scale(.975); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes route-auth-out {
+  to { opacity: 0; transform: translate3d(calc(var(--route-distance) * -1), -8px, 0); }
+}
+@keyframes route-auth-in {
+  from { opacity: 0; transform: translate3d(var(--route-distance), 16px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes route-cover-out {
+  to { opacity: 0; transform: translate3d(0, -45px, 0) scale(.95); }
+}
+@keyframes route-cover-in {
+  from { opacity: .25; transform: translate3d(0, 70px, 0) scale(.96); clip-path: inset(12% 0 0 0 round 28px); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); clip-path: inset(0 round 0); }
+}
+@media (max-width: 650px) {
+  html[data-route-transition] { --route-distance: 18px; --route-duration: 380ms; }
+  html[data-route-direction="back"] { --route-distance: -18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-route-transition]::view-transition-group(*),
+  html[data-route-transition]::view-transition-old(*),
+  html[data-route-transition]::view-transition-new(*) { animation: none !important; }
+}

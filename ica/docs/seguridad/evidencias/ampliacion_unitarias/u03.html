@@ -1,0 +1,10 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Límites de contraseña en bytes</title><style>body{margin:20px;color:#000;background:#fff;font:17px/1.4 Arial,sans-serif;max-width:65ch}h1{font-size:20px;margin:0 0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.35 Arial,sans-serif}pre.code{font:13px/1.35 monospace}small{font:13px/1.35 Arial,sans-serif}</style><h1>Límites de contraseña en bytes</h1><pre>Prueba unitaria U03
+Resultado JUnit Surefire: APROBADA
+Tiempo: 0.0 s
+Sin Spring Boot y sin PostgreSQL</pre><pre class="code">12  void passwordRechazaVaciasCortasYMasDe72Bytes() {
+13      assertEquals(&quot;clave123&quot;, Reglas.password(&quot;clave123&quot;));
+14      for (String invalida : new String[]{&quot;&quot;, &quot;     &quot;, &quot;12345&quot;, &quot;á&quot;.repeat(37)}) {
+15          rechaza400(() -&gt; Reglas.password(invalida));
+16      }
+17      assertEquals(&quot;á&quot;.repeat(36), Reglas.password(&quot;á&quot;.repeat(36)));
+18  }</pre><small>validacion/ReglasTest.java; extracto de código real. Resultado: TEST-com.bibliotrack.ica.validacion.ReglasTest.xml</small></html>
