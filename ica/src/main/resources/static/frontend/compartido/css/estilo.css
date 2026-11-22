@@ -363,7 +363,10 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .checkout-card-brand img[hidden] { display: none; }
 .checkout-card-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .checkout-hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
-#receipt-feedback { min-block-size: 1.5em; }
+.checkout-document { gap: 10px; }
+.checkout-document-feedback { line-height: 1.35; }
+.checkout-document-feedback:not(:empty):not(.sr-only) { margin-block-start: 4px; }
+.checkout-document-feedback[data-error]:not(:empty) { animation: biblio-field-in var(--fast) var(--ease) both; }
 .checkout-error, .checkout-hint[data-error] { color: var(--danger); }
 .checkout-error { margin-top: 12px; padding: 9px 12px; border-radius: 10px; background: var(--danger-soft); }
 .btn-checkout-action:disabled { opacity: .6; cursor: default; }

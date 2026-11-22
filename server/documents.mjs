@@ -7,7 +7,7 @@ export async function lookupDocument(data) {
     fail(`Ingresa los ${digits} dígitos del ${tipo.toUpperCase()}.`);
   }
   const token = process.env.DECOLECTA_TOKEN?.trim();
-  if (!token) fail('La consulta de documentos no está disponible. Elige boleta simple o intenta más tarde.', 503);
+  if (!token) fail('La consulta de documentos no está disponible.', 503);
 
   const resource = tipo === 'dni' ? 'reniec/dni' : 'sunat/ruc';
   const url = new URL(`https://api.decolecta.com/v1/${resource}`);
@@ -25,6 +25,8 @@ export async function lookupDocument(data) {
     fail('No se pudo consultar el documento. Vuelve a intentarlo.', 502);
   }
   if (response.status === 404) fail('No encontramos un nombre para ese documento.', 404);
+  if ([400, 422].includes(response.status)) fail(`Revisa el número de ${tipo.toUpperCase()}.`, 422);
+  if ([401, 403, 429].includes(response.status)) fail('La consulta de documentos no está disponible.', 503);
   if (!response.ok) fail('La consulta de documentos está temporalmente fuera de servicio.', 502);
   const field = key => typeof result?.[key] === 'string' ? result[key].trim() : '';
   const nombre = tipo === 'dni'

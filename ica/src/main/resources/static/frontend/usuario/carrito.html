@@ -115,12 +115,14 @@
               </select>
             </div>
 
-            <fieldset class="checkout-panel" id="checkout-document" data-private-fields hidden disabled>
+            <fieldset class="checkout-panel checkout-document" id="checkout-document" data-private-fields hidden disabled>
               <legend class="sr-only">Datos del comprobante</legend>
               <div class="checkout-field">
                 <label for="receipt-document" id="receipt-document-label">DNI</label>
-                <input id="receipt-document" type="text" inputmode="numeric" autocomplete="off" placeholder="8 dígitos" aria-describedby="receipt-feedback" required>
-                <p class="checkout-hint" id="receipt-feedback" role="status"></p>
+                <div>
+                  <input id="receipt-document" type="text" inputmode="numeric" name="receipt-id-number" autocomplete="off" spellcheck="false" placeholder="8 dígitos" aria-describedby="receipt-feedback" required>
+                  <p class="checkout-hint checkout-document-feedback" id="receipt-feedback" role="status" aria-atomic="true"></p>
+                </div>
               </div>
               <div class="checkout-field">
                 <label for="receipt-name" id="receipt-name-label">Nombre completo</label>

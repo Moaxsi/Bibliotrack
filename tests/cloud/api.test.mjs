@@ -160,8 +160,10 @@ test('lookup authenticates and validates, and maps the provider response without
   try {
     assert.equal((await query(input, clientToken)).status, 503);
     process.env.DECOLECTA_TOKEN = 'test-only';
+    let providerStatus = 200;
     t.mock.method(globalThis, 'fetch', async (url, options) => {
       assert.equal(options.headers.Authorization, 'Bearer test-only');
+      if (providerStatus !== 200) return Response.json({ error: 'Respuesta del proveedor' }, { status: providerStatus });
       if (url.pathname === '/v1/reniec/dni') {
         assert.equal(url.searchParams.get('numero'), '12345678');
         return Response.json({ full_name: 'Cliente de prueba', ignored: 'extra' });
@@ -171,7 +173,12 @@ test('lookup authenticates and validates, and maps the provider response without
       return Response.json({ razon_social: 'Empresa de prueba', ignored: 'extra' });
     });
     assert.deepEqual((await query(input, clientToken)).data, { nombre: 'Cliente de prueba' });
-    assert.deepEqual((await query({ tipo: 'ruc', numero: '12345678901' }, clientToken)).data, { nombre: 'Empresa de prueba' });
+    const ruc = { tipo: 'ruc', numero: '12345678901' };
+    assert.deepEqual((await query(ruc, clientToken)).data, { nombre: 'Empresa de prueba' });
+    for (const [status, document, expected] of [[400, input, 422], [422, ruc, 422], [404, input, 404], [401, input, 503], [429, ruc, 503]]) {
+      providerStatus = status;
+      assert.equal((await query(document, clientToken)).status, expected);
+    }
   } finally {
     if (original === undefined) delete process.env.DECOLECTA_TOKEN;
     else process.env.DECOLECTA_TOKEN = original;

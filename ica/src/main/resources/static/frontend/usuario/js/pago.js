@@ -50,9 +50,14 @@ export function configurarPago(lector) {
 
   const tipoDocumento = () => comprobante.value === 'Factura' ? 'ruc' : 'dni';
   const longitud = () => tipoDocumento() === 'ruc' ? 11 : 8;
-  function mensaje(texto = '', error = false) {
-    ayuda.textContent = texto;
+  const etiquetaDocumento = () => tipoDocumento().toUpperCase();
+  const avisoLongitud = () => `Ingresa ${longitud()} dígitos para el ${etiquetaDocumento()}.`;
+  function mensaje(texto = '', { error = false, invalido = false, soloLectores = false } = {}) {
     ayuda.toggleAttribute('data-error', error);
+    ayuda.classList.toggle('sr-only', soloLectores);
+    if (invalido) identificador.setAttribute('aria-invalid', 'true');
+    else identificador.removeAttribute('aria-invalid');
+    ayuda.textContent = texto;
   }
 
   function limpiarDocumento() {
@@ -72,16 +77,16 @@ export function configurarPago(lector) {
     documento.hidden = documento.disabled = comprobante.value === 'Boleta';
     identificador.value = '';
     identificador.placeholder = `${longitud()} dígitos`;
-    campo('receipt-document-label').textContent = tipoDocumento().toUpperCase();
+    campo('receipt-document-label').textContent = etiquetaDocumento();
     campo('receipt-name-label').textContent = tipoDocumento() === 'ruc' ? 'Razón social' : 'Nombre completo';
   }
 
   async function buscar() {
     const valor = identificador.value;
-    if (!sesion.id) { mensaje('Inicia sesión para consultar el documento.', true); return; }
+    if (!sesion.id) { mensaje('Inicia sesión para consultar.', { error: true }); return; }
     const actual = new AbortController();
     consulta = actual;
-    mensaje(`Consultando ${tipoDocumento().toUpperCase()}…`);
+    mensaje(`Consultando ${etiquetaDocumento()}…`);
     try {
       const datos = await solicitar('documento', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -91,17 +96,19 @@ export function configurarPago(lector) {
       if (typeof datos.nombre !== 'string' || !datos.nombre.trim()) throw new Error();
       nombre.value = datos.nombre;
       identificador.setCustomValidity('');
-      mensaje(tipoDocumento() === 'ruc' ? 'Razón social encontrada.' : 'Nombre encontrado.');
+      mensaje(tipoDocumento() === 'ruc' ? 'Razón social encontrada.' : 'Nombre encontrado.', { soloLectores: true });
     } catch (error) {
       if (actual.signal.aborted) return;
       identificador.setCustomValidity('');
       if (error.status === 404) {
-        mensaje('Documento no encontrado. Revisa el número.', true);
+        mensaje(`${etiquetaDocumento()} no encontrado. Revisa el número.`, { error: true, invalido: true });
+      } else if (error.status === 400 || error.status === 422) {
+        mensaje(`Revisa el número de ${etiquetaDocumento()}.`, { error: true, invalido: true });
       } else {
         nombre.readOnly = false;
         const etiqueta = tipoDocumento() === 'ruc' ? 'la razón social' : 'el nombre completo';
-        nombre.placeholder = `Ingresa ${etiqueta}`;
-        mensaje(`La consulta está temporalmente fuera de servicio. Puedes escribir ${etiqueta}.`, true);
+        nombre.placeholder = `Escribe ${etiqueta}`;
+        mensaje('Consulta no disponible.', { error: true });
       }
     } finally {
       if (consulta === actual) consulta = undefined;
@@ -110,8 +117,15 @@ export function configurarPago(lector) {
 
   identificador.addEventListener('input', () => {
     limpiarDocumento();
-    identificador.value = digitos(identificador.value).slice(0, longitud());
+    const valor = digitos(identificador.value);
+    if (valor !== identificador.value) identificador.value = valor;
     if (identificador.value.length === longitud()) temporal = setTimeout(buscar, 280);
+    if (identificador.value.length > longitud()) mensaje(avisoLongitud(), { error: true, invalido: true });
+  });
+  identificador.addEventListener('blur', () => {
+    if (identificador.value && identificador.value.length < longitud()) {
+      mensaje(avisoLongitud(), { error: true, invalido: true });
+    }
   });
   nombre.addEventListener('input', () => nombre.setCustomValidity(''));
   metodo.addEventListener('change', actualizarPago);
@@ -127,7 +141,8 @@ export function configurarPago(lector) {
       }
       if (!documento.hidden) {
         if (identificador.value.length !== longitud()) {
-          identificador.setCustomValidity(`Ingresa los ${longitud()} dígitos del ${tipoDocumento().toUpperCase()}.`);
+          mensaje(avisoLongitud(), { error: true, invalido: true });
+          identificador.setCustomValidity(avisoLongitud());
         } else if (nombre.readOnly && !nombre.value) {
           identificador.setCustomValidity(ayuda.hasAttribute('data-error')
             ? ayuda.textContent : 'Espera a que termine la consulta.');
