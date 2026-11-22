@@ -2,7 +2,6 @@ import { solicitar } from '../../compartido/js/api.js';
 import { sesion } from '../../compartido/js/comun.js';
 
 const digitos = valor => valor.replace(/[^0-9]/g, '');
-const ejemplos = { Visa: '4242424242424242', Mastercard: '5555555555554444' };
 
 export function marcaTarjeta(numero) {
   if (numero.startsWith('4')) return 'Visa';
@@ -21,22 +20,24 @@ export function configurarPago(lector) {
   const ayuda = campo('receipt-feedback');
   let consulta;
   let temporal = 0;
+  let nombreEditado = false;
 
   function mostrarTarjeta(valor) {
     numero.value = valor.match(/.{1,4}/g)?.join(' ') || '';
     numero.setCustomValidity('');
     const marca = marcaTarjeta(valor);
     for (const logo of logos) logo.hidden = logo.alt !== marca;
-    const esEjemplo = Boolean(marca && valor === ejemplos[marca]);
-    titular.value = esEjemplo ? 'Cliente BiblioTrack' : '';
-    vence.value = esEjemplo ? `12/${String(new Date().getFullYear() + 2).slice(-2)}` : '';
-    cvv.value = esEjemplo ? '123' : '';
   }
 
   function actualizarPago() {
     tarjeta.hidden = tarjeta.disabled = metodo.value !== 'Tarjeta';
     campo('checkout-yape-hint').hidden = metodo.value !== 'Yape';
-    if (tarjeta.hidden) mostrarTarjeta('');
+    if (tarjeta.hidden) {
+      mostrarTarjeta('');
+      titular.value = '';
+      vence.value = '';
+      cvv.value = '';
+    }
   }
 
   numero.addEventListener('input', () => {
@@ -64,9 +65,8 @@ export function configurarPago(lector) {
     clearTimeout(temporal);
     consulta?.abort();
     consulta = undefined;
-    nombre.readOnly = true;
     nombre.value = '';
-    nombre.placeholder = 'Se completa automáticamente';
+    nombre.placeholder = 'Se completa automáticamente o escríbelo';
     nombre.setCustomValidity('');
     identificador.setCustomValidity('');
     mensaje();
@@ -74,6 +74,7 @@ export function configurarPago(lector) {
 
   function actualizarDocumento() {
     limpiarDocumento();
+    nombreEditado = false;
     documento.hidden = documento.disabled = comprobante.value === 'Boleta';
     identificador.value = '';
     identificador.placeholder = `${longitud()} dígitos`;
@@ -94,7 +95,7 @@ export function configurarPago(lector) {
       }, lector);
       if (actual.signal.aborted) return;
       if (typeof datos.nombre !== 'string' || !datos.nombre.trim()) throw new Error();
-      nombre.value = datos.nombre;
+      if (!nombreEditado) nombre.value = datos.nombre;
       identificador.setCustomValidity('');
       mensaje(tipoDocumento() === 'ruc' ? 'Razón social encontrada.' : 'Nombre encontrado.', { soloLectores: true });
     } catch (error) {
@@ -105,7 +106,6 @@ export function configurarPago(lector) {
       } else if (error.status === 400 || error.status === 422) {
         mensaje(`Revisa el número de ${etiquetaDocumento()}.`, { error: true, invalido: true });
       } else {
-        nombre.readOnly = false;
         const etiqueta = tipoDocumento() === 'ruc' ? 'la razón social' : 'el nombre completo';
         nombre.placeholder = `Escribe ${etiqueta}`;
         mensaje('Consulta no disponible.', { error: true });
@@ -116,7 +116,9 @@ export function configurarPago(lector) {
   }
 
   identificador.addEventListener('input', () => {
+    const anterior = nombreEditado ? nombre.value : '';
     limpiarDocumento();
+    nombre.value = anterior;
     const valor = digitos(identificador.value);
     if (valor !== identificador.value) identificador.value = valor;
     if (identificador.value.length === longitud()) temporal = setTimeout(buscar, 280);
@@ -127,7 +129,7 @@ export function configurarPago(lector) {
       mensaje(avisoLongitud(), { error: true, invalido: true });
     }
   });
-  nombre.addEventListener('input', () => nombre.setCustomValidity(''));
+  nombre.addEventListener('input', () => { nombreEditado = true; nombre.setCustomValidity(''); });
   metodo.addEventListener('change', actualizarPago);
   comprobante.addEventListener('change', actualizarDocumento);
   actualizarPago();
@@ -135,18 +137,11 @@ export function configurarPago(lector) {
 
   return {
     validar() {
-      if (!tarjeta.hidden) {
-        const valor = digitos(numero.value);
-        numero.setCustomValidity(Object.values(ejemplos).includes(valor) ? '' : 'Ingresa un número de tarjeta de ejemplo válido.');
-      }
       if (!documento.hidden) {
         if (identificador.value.length !== longitud()) {
           mensaje(avisoLongitud(), { error: true, invalido: true });
           identificador.setCustomValidity(avisoLongitud());
-        } else if (nombre.readOnly && !nombre.value) {
-          identificador.setCustomValidity(ayuda.hasAttribute('data-error')
-            ? ayuda.textContent : 'Espera a que termine la consulta.');
-        } else if (!nombre.readOnly) {
+        } else {
           nombre.setCustomValidity(nombre.value.trim() ? '' : 'Completa este dato del comprobante.');
         }
       }
@@ -160,8 +155,11 @@ export function configurarPago(lector) {
     },
     finalizar() {
       mostrarTarjeta('');
+      titular.value = '';
+      vence.value = '';
+      cvv.value = '';
       actualizarDocumento();
     },
-    salir() { mostrarTarjeta(''); limpiarDocumento(); }
+    salir() { mostrarTarjeta(''); titular.value = ''; vence.value = ''; cvv.value = ''; limpiarDocumento(); }
   };
 }

@@ -91,16 +91,16 @@
               </div>
               <div class="checkout-field">
                 <label for="card-holder">Titular</label>
-                <input id="card-holder" type="text" placeholder="Nombre y apellido" readonly>
+                <input id="card-holder" type="text" maxlength="120" autocomplete="cc-name" placeholder="Nombre y apellido" required>
               </div>
               <div class="checkout-card-pair">
                 <div class="checkout-field">
                   <label for="card-expiry">Vencimiento</label>
-                  <input id="card-expiry" type="text" placeholder="MM/AA" readonly>
+                  <input id="card-expiry" type="text" inputmode="numeric" maxlength="5" autocomplete="cc-exp" placeholder="MM/AA" required>
                 </div>
                 <div class="checkout-field">
                   <label for="card-cvv">CVV</label>
-                  <input id="card-cvv" type="password" placeholder="000" readonly>
+                  <input id="card-cvv" type="password" inputmode="numeric" maxlength="4" autocomplete="cc-csc" placeholder="000" required>
                 </div>
               </div>
             </fieldset>
@@ -126,7 +126,7 @@
               </div>
               <div class="checkout-field">
                 <label for="receipt-name" id="receipt-name-label">Nombre completo</label>
-                <input id="receipt-name" type="text" maxlength="200" autocomplete="off" readonly placeholder="Se completa automáticamente" aria-describedby="receipt-feedback">
+                <input id="receipt-name" type="text" maxlength="200" autocomplete="off" required placeholder="Se completa automáticamente o escríbelo" aria-describedby="receipt-feedback">
               </div>
             </fieldset>
           </div>
