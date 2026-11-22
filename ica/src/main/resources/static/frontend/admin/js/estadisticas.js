@@ -17,7 +17,7 @@ export function calcularReporte(ventas, periodo = '30', ahora = new Date()) {
   }
   const filtradas = fechadas.filter(v => v.fechaDate && v.fechaDate >= inicio && v.fechaDate <= fin)
     .sort((a, b) => b.fechaDate - a.fechaDate || Number(b.idVenta) - Number(a.idVenta));
-  const completadas = filtradas.filter(v => String(v.estado).toLowerCase() === 'completada');
+  const completadas = filtradas.filter(v => ['Completada', 'Confirmada'].includes(v.estado));
   const totalCentimos = completadas.reduce((sum, v) => sum + Math.round((Number(v.total) || 0) * 100), 0);
   const metodos = new Map();
   completadas.forEach(v => { const nombre = String(v.metodoPago || 'Sin especificar'); metodos.set(nombre, (metodos.get(nombre) || 0) + 1); });

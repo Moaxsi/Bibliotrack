@@ -39,7 +39,7 @@ function rutaLocal(value) {
 function guardarEstado() {
   const campos = {};
   document.querySelectorAll('main input[id], main select[id], main textarea[id]').forEach(el => {
-    if (['password', 'file', 'hidden'].includes(el.type) || el.closest('.form-box')) return;
+    if (['password', 'file', 'hidden'].includes(el.type) || el.closest('.form-box, [data-private-fields]')) return;
     campos[el.id] = el.value;
   });
   estados.set(indice, {

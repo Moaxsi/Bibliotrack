@@ -1,4 +1,5 @@
 import { alMontarPagina } from './pagina.js';
+import { actualizarSelectores } from './selectores.js';
 import { sesion } from './comun.js';
 
 export const movimientoReducido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,6 +50,7 @@ export function abrirModal(id) {
   activeModal = modal;
   closing = false;
   modalAnimation?.stop();
+  actualizarSelectores(modal);
   modal.style.display = 'flex';
   modal.style.opacity = '1';
   document.body.style.overflow = 'hidden';
@@ -57,7 +59,7 @@ export function abrirModal(id) {
   if (!movimientoReducido() && window.Motion) {
     modalAnimation = window.Motion.animate(card, { opacity: [0, 1], transform: ['translateY(16px) scale(.97)', 'translateY(0px) scale(1)'] }, { duration: .3, ease: [.22, 1, .36, 1] });
   }
-  (modal.querySelector('input:not([type="hidden"]):not([disabled]), select, button') || modal).focus({ preventScroll: true });
+  (modal.querySelector('input:not([type="hidden"]):not([disabled]), button:not([disabled])') || modal).focus({ preventScroll: true });
 }
 export function cerrarModal(id, instant = false) {
   const modal = document.getElementById(id);
@@ -102,12 +104,12 @@ alMontarPagina('body', (pagina) => {
     if (activeModal) {
       if (event.key === 'Escape') { event.preventDefault(); cerrarModal(activeModal.id); }
       if (event.key === 'Tab') {
-        const focusable = [...activeModal.querySelectorAll('button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea, a[href], [tabindex="0"]')].filter(el => el.getClientRects().length);
+        const focusable = [...activeModal.querySelectorAll('button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]):not(.biblio-select-original), textarea, a[href], [tabindex="0"]')].filter(el => el.getClientRects().length);
         const first = focusable[0], last = focusable.at(-1);
         if (event.shiftKey && (document.activeElement === first || document.activeElement === activeModal)) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
-    } else if (event.key === '/' && !event.ctrlKey && !event.metaKey && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+    } else if (event.key === '/' && !event.ctrlKey && !event.metaKey && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && document.activeElement.getAttribute('role') !== 'combobox') {
       const input = document.querySelector('input[type="search"]');
       if (input) { event.preventDefault(); input.focus(); }
     }

@@ -21,8 +21,9 @@ before(async () => {
   process.env.BIBLIOTRACK_JWT_SECRET = 'isolated-test-secret-that-is-never-used-in-production';
   await admin.connect();
   await admin.query(`CREATE DATABASE ${name}`);
-  db = new pg.Pool({ ...config, database: name });
+  db = new pg.Pool({ ...config, database: name, options: '-c timezone=UTC' });
   await db.query(await readFile(new URL('../../ica/sql/migracion_01_implementacionBD.sql', import.meta.url), 'utf8'));
+  await db.query(await readFile(new URL('../../sql/cloud-checkout.sql', import.meta.url), 'utf8'));
   // Roles anon/authenticated are Supabase-specific, so use only the table definition locally.
   const images = await readFile(new URL('../../sql/cloud-portadas.sql', import.meta.url), 'utf8');
   await db.query(images.slice(0, images.indexOf('REVOKE')));
@@ -80,6 +81,9 @@ test('checkout merges duplicate lines, ignores client prices and protects privat
   const { rows: [book] } = await db.query('SELECT * FROM libros WHERE stock>5 LIMIT 1');
   const sale = await call('ventas', { method: 'POST', token: clientToken, body: { total: 0.01, items: [{ idLibro: book.id_libro, cantidad: 1, precioVenta: 0.01 }, { idLibro: book.id_libro, cantidad: 1 }] } });
   assert.equal(sale.status, 200); assert.equal(sale.data.total, Number(book.precio_venta) * 2);
+  const { rows: [saved] } = await db.query("SELECT fecha, CURRENT_TIMESTAMP AT TIME ZONE 'America/Lima' AS hora_lima, current_setting('TimeZone') AS zona FROM ventas WHERE id_venta=$1", [sale.data.idVenta]);
+  assert.equal(saved.zona, 'UTC');
+  assert.ok(Math.abs(new Date(saved.fecha) - new Date(saved.hora_lima)) < 30000, 'La venta debe guardar la hora de Lima aunque la conexión use UTC');
   assert.equal((await db.query('SELECT stock FROM libros WHERE id_libro=$1', [book.id_libro])).rows[0].stock, book.stock - 2);
   assert.equal((await call(`mis-compras/${sale.data.idVenta}/detalle`, { token: clientToken })).data[0].cantidad, 2);
   assert.equal((await call(`mis-compras/${sale.data.idVenta}/detalle`, { token: adminToken })).status, 404);
@@ -95,6 +99,85 @@ test('failed checkout rolls back and concurrent checkouts cannot oversell', asyn
   assert.deepEqual(results.map(result => result.status).sort(), [200, 400]);
   assert.equal((await db.query('SELECT stock FROM libros WHERE id_libro=$1', [book.id_libro])).rows[0].stock, 0);
 });
+test('Yape reserves the book until an administrator confirms, rejects or the deadline expires', async () => {
+  const { rows: [book] } = await db.query(
+    "INSERT INTO libros (id_categoria,isbn,titulo,autor,precio_venta,stock,estado) VALUES (1,'9789999999993','Yape de prueba','Pruebas',12.50,2,'Activo') RETURNING id_libro"
+  );
+  const items = [{ idLibro: book.id_libro, cantidad: 1 }];
+  const order = (metodoPago = 'Yape') => call('ventas', { method: 'POST', token: clientToken, body: { metodoPago, items } });
+  const decide = (id, estado, token = adminToken) => call(`ventas/${id}/estado`, { method: 'PATCH', token, body: { estado } });
+  const stock = async () => (await db.query('SELECT stock FROM libros WHERE id_libro=$1', [book.id_libro])).rows[0].stock;
+  const first = await order();
+  const second = await order();
+  assert.equal(first.status, 200);
+  assert.equal(second.status, 200);
+  assert.equal(first.data.estado, 'Pendiente');
+  assert.ok(first.data.vencePago);
+  assert.equal(await stock(), 2);
+  assert.equal((await order('Efectivo')).status, 400);
+  const listed = (await call('ventas', { token: adminToken })).data.find(v => v.idVenta === first.data.idVenta);
+  assert.equal(listed.estado, 'Pendiente');
+  assert.equal(listed.vencePago, first.data.vencePago);
+  assert.equal((await decide(first.data.idVenta, 'Confirmada', clientToken)).status, 403);
+  const approvals = await Promise.all([1, 2].map(() => decide(first.data.idVenta, 'Confirmada')));
+  assert.deepEqual(approvals.map(result => result.data.estado), ['Confirmada', 'Confirmada']);
+  assert.equal(await stock(), 1);
+  assert.equal((await decide(first.data.idVenta, 'Rechazada')).status, 409);
+  assert.equal((await decide(second.data.idVenta, 'Rechazada')).data.estado, 'Rechazada');
+  assert.equal(await stock(), 1);
+  const third = await order();
+  await db.query("UPDATE ventas SET fecha=fecha-INTERVAL '25 hours' WHERE id_venta=$1", [third.data.idVenta]);
+  assert.equal((await decide(third.data.idVenta, 'Confirmada')).status, 409);
+  const history = (await call('mis-compras', { token: clientToken })).data;
+  assert.equal(history.find(v => v.idVenta === third.data.idVenta).estado, 'Vencida');
+  assert.equal(history.find(v => v.idVenta === first.data.idVenta).estado, 'Confirmada');
+  assert.equal((await order('Tarjeta')).data.estado, 'Completada');
+  assert.equal(await stock(), 0);
+});
+
+test('receipt documents require the proper length and are available only in the admin report', async () => {
+  const { rows: [book] } = await db.query('SELECT id_libro FROM libros WHERE stock>3 LIMIT 1');
+  const body = { tipoComprobante: 'Boleta de venta', items: [{ idLibro: book.id_libro, cantidad: 1 }] };
+  const buy = data => call('ventas', { method: 'POST', token: clientToken, body: { ...body, ...data } });
+  assert.equal((await buy({ documentoComprobante: '1234', nombreComprobante: 'Ejemplo' })).status, 400);
+  assert.equal((await buy({ tipoComprobante: 'Factura', documentoComprobante: '12345678', nombreComprobante: 'Ejemplo' })).status, 400);
+  const sale = await buy({ documentoComprobante: '12345678', nombreComprobante: 'Ejemplo' });
+  assert.equal(sale.status, 200);
+  const entry = (await call('ventas', { token: adminToken })).data.find(v => v.idVenta === sale.data.idVenta);
+  assert.equal(entry.documentoComprobante, '12345678');
+  assert.equal(entry.nombreComprobante, 'Ejemplo');
+  const own = (await call('mis-compras', { token: clientToken })).data.find(v => v.idVenta === sale.data.idVenta);
+  assert.equal(own.documentoComprobante, undefined);
+});
+
+test('lookup authenticates and validates, and maps the provider response without exposing additional fields', async t => {
+  const input = { tipo: 'dni', numero: '12345678' };
+  const query = (body, token) => call('documento', { method: 'POST', token, body });
+  assert.equal((await query(input)).status, 401);
+  assert.equal((await query({ ...input, numero: '123' }, clientToken)).status, 400);
+  const original = process.env.DECOLECTA_TOKEN;
+  delete process.env.DECOLECTA_TOKEN;
+  try {
+    assert.equal((await query(input, clientToken)).status, 503);
+    process.env.DECOLECTA_TOKEN = 'test-only';
+    t.mock.method(globalThis, 'fetch', async (url, options) => {
+      assert.equal(options.headers.Authorization, 'Bearer test-only');
+      if (url.pathname === '/v1/reniec/dni') {
+        assert.equal(url.searchParams.get('numero'), '12345678');
+        return Response.json({ full_name: 'Cliente de prueba', ignored: 'extra' });
+      }
+      assert.equal(url.pathname, '/v1/sunat/ruc');
+      assert.equal(url.searchParams.get('numero'), '12345678901');
+      return Response.json({ razon_social: 'Empresa de prueba', ignored: 'extra' });
+    });
+    assert.deepEqual((await query(input, clientToken)).data, { nombre: 'Cliente de prueba' });
+    assert.deepEqual((await query({ tipo: 'ruc', numero: '12345678901' }, clientToken)).data, { nombre: 'Empresa de prueba' });
+  } finally {
+    if (original === undefined) delete process.env.DECOLECTA_TOKEN;
+    else process.env.DECOLECTA_TOKEN = original;
+  }
+});
+
 test('administrator cannot remove own access and changed passwords revoke JWTs', async () => {
   const users = (await call('usuarios', { token: adminToken })).data;
   const self = users.find(user => user.rol === 'ADMIN');

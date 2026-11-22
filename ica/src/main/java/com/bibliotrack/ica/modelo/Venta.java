@@ -3,6 +3,8 @@ package com.bibliotrack.ica.modelo;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ventas")
@@ -29,12 +31,21 @@ public class Venta {
 
     private String estado = "Completada";
 
+    @Column(name = "documento_comprobante", length = 11)
+    private String documentoComprobante;
+
+    @Column(name = "nombre_comprobante", length = 200)
+    private String nombreComprobante;
+
+    public static LocalDateTime horaLima() { return LocalDateTime.now(ZoneId.of("America/Lima")); }
+
+
     public Venta() {}
 
     @PrePersist
     public void prePersist() {
         if (this.fecha == null) {
-            this.fecha = LocalDateTime.now();
+            this.fecha = horaLima();
         }
     }
 
@@ -57,5 +68,14 @@ public class Venta {
     public void setTipoComprobante(String tipoComprobante) { this.tipoComprobante = tipoComprobante; }
 
     public String getEstado() { return estado; }
+
+    public LocalDateTime getVencePago() {
+        return "Yape".equals(metodoPago) && "Pendiente".equals(estado) && fecha != null ? fecha.plusHours(24) : null;
+    }
+
+    @JsonIgnore public String getDocumentoComprobante() { return documentoComprobante; }
+    public void setDocumentoComprobante(String numero) { this.documentoComprobante = numero; }
+    @JsonIgnore public String getNombreComprobante() { return nombreComprobante; }
+    public void setNombreComprobante(String nombre) { this.nombreComprobante = nombre; }
     public void setEstado(String estado) { this.estado = estado; }
 }

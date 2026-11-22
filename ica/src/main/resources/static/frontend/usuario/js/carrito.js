@@ -1,8 +1,9 @@
 import { alMontarPagina } from '../../compartido/js/pagina.js';
-import { animarEntrada, escapar, portadaSegura, movimientoReducido } from '../../compartido/js/interfaz.js';
-import { API_URL, rutas, sesion, notificar } from '../../compartido/js/comun.js';
-import { fetchConToken } from '../../compartido/js/comun.js';
-const idUsuarioActual = sesion.id;
+import { escapar, portadaSegura, movimientoReducido } from '../../compartido/js/interfaz.js';
+import { sesion, notificar } from '../../compartido/js/comun.js';
+import { solicitar } from '../../compartido/js/api.js';
+import { mostrarPagoYape } from '../../compartido/js/estados-venta.js';
+import { configurarPago } from './pago.js';
 let carrito;
 try { carrito = JSON.parse(localStorage.getItem('bibliotrack_cart')) || []; }
 catch { carrito = []; }
@@ -24,14 +25,19 @@ alMontarPagina('body', (pagina) => {
   actualizarContadorCarrito();
 
   const tablaCarritoBody = document.getElementById('cart-table-body');
-  if (tablaCarritoBody) {
-    renderizarPaginaCarrito();
-  }
+  if (!tablaCarritoBody) return;
+  const form = document.getElementById('checkout-form');
+  const boton = document.getElementById('btn-procesar-compra');
+  const error = document.getElementById('checkout-error');
+  const pago = configurarPago(pagina.fetch);
+  let procesando = false;
+  pagina.alSalir(pago.salir);
+  renderizarPaginaCarrito();
 
   function renderizarPaginaCarrito() {
     const subtotalEl = document.getElementById('cart-subtotal-val');
     const totalEl = document.getElementById('cart-total-val');
-    if (!tablaCarritoBody) return;
+    boton.disabled = procesando || carrito.length === 0;
 
     if (carrito.length === 0) {
       tablaCarritoBody.innerHTML = `
@@ -86,7 +92,7 @@ alMontarPagina('body', (pagina) => {
   }
 
   window.cambiarCantidad = function(idx, delta) {
-    if (!carrito[idx]) return;
+    if (procesando || !carrito[idx]) return;
     const nueva = carrito[idx].cantidad + delta;
     if (nueva <= 0) {
       carrito.splice(idx, 1);
@@ -102,81 +108,74 @@ alMontarPagina('body', (pagina) => {
   };
 
   window.eliminarDelCarrito = function(idx) {
+    if (procesando) return;
     carrito.splice(idx, 1);
     guardarCarrito();
     renderizarPaginaCarrito();
   };
 
   window.vaciarCarritoCompleto = function() {
-    if (carrito.length === 0) return;
+    if (procesando || carrito.length === 0) return;
     carrito = [];
     guardarCarrito();
     renderizarPaginaCarrito();
     notificar('Se vació el carrito.');
   };
 
-  window.ejecutarCompraFinal = async function() {
-    if (carrito.length === 0) {
-      notificar('El carrito está vacío.');
+  form.noValidate = true;
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (procesando || !carrito.length) return;
+    error.hidden = true;
+    if (!sesion.id) {
+      notificar('Inicia sesión para completar tu compra.');
+      window.biblioNavigate('/frontend/auth/login.html');
       return;
     }
 
-    if (!idUsuarioActual) {
-      notificar('Debes iniciar sesión para confirmar tu compra.');
-      setTimeout(() => {
-        if (!pagina.signal.aborted) window.biblioNavigate('/frontend/auth/login.html');
-      }, 1200);
-      return;
-    }
-
-    const metodo = document.getElementById('order-metodo-pago').value;
-    const comprobante = document.getElementById('order-tipo-comprobante').value;
-    const btn = document.getElementById('btn-procesar-compra');
-    if (btn.disabled) return;
-
-    btn.disabled = true;
-    btn.textContent = 'Confirmando tu compra…';
-
-    const payload = {
-      metodoPago: metodo,
-      tipoComprobante: comprobante,
-      items: carrito.map(it => ({
-        idLibro: it.idLibro,
-        cantidad: it.cantidad
-      }))
-    };
-
+    pago.validar();
+    if (!form.reportValidity()) return;
+    const datos = pago.datos();
+    const items = carrito.map(({ idLibro, cantidad }) => ({ idLibro, cantidad }));
+    procesando = true;
+    boton.disabled = true;
+    boton.textContent = 'Registrando pedido…';
+    const controles = form.querySelectorAll('input, select');
+    controles.forEach(el => { el.disabled = true; });
     try {
-      const res = await fetchConToken(`${API_URL}/ventas`, {
+      const venta = await solicitar('ventas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await res.json();
-
-      if (res.status === 401) {
-        notificar('Tu sesión terminó. Inicia sesión para continuar.');
-        window.location.href = '/frontend/auth/login.html';
-        return;
-      }
-
-      if (res.ok) {
-        notificar('¡Compra registrada con éxito!');
+        body: JSON.stringify({ ...datos, items })
+      }, pagina.fetch);
+      const cantidades = new Map(items.map(({ idLibro, cantidad }) => [idLibro, cantidad]));
+      try {
+        carrito = JSON.parse(localStorage.getItem('bibliotrack_cart')) || [];
+      } catch {
         carrito = [];
-        guardarCarrito();
-        renderizarPaginaCarrito();
-        notificar('Puedes consultar esta compra en Historial.');
-      } else {
-        notificar(data.error || 'No se pudo procesar la venta.');
       }
-    } catch (err) {
-      notificar('Error de conexión con el servidor.');
+      carrito = carrito.map(it => ({ ...it, cantidad: it.cantidad - (cantidades.get(it.idLibro) || 0) }))
+        .filter(it => it.cantidad > 0);
+      guardarCarrito();
+      if (pagina.signal.aborted) return;
+      pago.finalizar();
+      if (venta.estado === 'Pendiente') mostrarPagoYape(venta);
+      else if (datos.metodoPago === 'Tarjeta') notificar('Pedido registrado sin cargo. Puedes verlo en Historial.');
+      else notificar('Compra confirmada. Puedes ver sus libros en Historial.');
+    } catch (exception) {
+      if (pagina.signal.aborted) return;
+      error.hidden = false;
+      error.textContent = exception.message;
+      error.focus();
     } finally {
-      btn.disabled = false;
-      btn.textContent = 'Procesar Compra';
+      if (!pagina.signal.aborted) {
+        procesando = false;
+        controles.forEach(el => { el.disabled = false; });
+        boton.textContent = 'Procesar compra';
+        renderizarPaginaCarrito();
+      }
     }
-  };
+  });
 });
 
 export function agregarAlCarrito(libro) {

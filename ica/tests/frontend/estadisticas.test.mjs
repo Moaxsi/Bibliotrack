@@ -14,6 +14,14 @@ test('Solo ventas completadas participan en métricas, sin perder otros estados 
   assert.equal(r.total,30.3); assert.equal(r.promedio,15.15); assert.equal(r.completadas.length,2); assert.equal(r.filtradas.length,3);
   assert.equal(r.serie.at(-1).total,30.3); assert.deepEqual(r.pagos,[{nombre:'Yape',cantidad:2}]);
 });
+test('Los pedidos Yape solo aparecen en ingresos después de confirmarse', () => {
+  const fecha = '2026-10-25T08:00:00';
+  const r = calcularReporte([v(1, fecha, 10, 'Pendiente'), v(2, fecha, 20, 'Confirmada'),
+    v(3, fecha, 30, 'Rechazada'), v(4, fecha, 40, 'Vencida')], '30', ahora);
+  assert.equal(r.filtradas.length, 4);
+  assert.equal(r.total, 20);
+  assert.equal(r.completadas.length, 1);
+});
 test('No inventa ventas en períodos vacíos', () => {
   const r = calcularReporte([],'30',ahora); assert.equal(r.total,0); assert.equal(r.promedio,0); assert.equal(r.serie.length,30); assert.ok(r.serie.every(d=>d.total===0)); assert.deepEqual(r.pagos,[]);
 });

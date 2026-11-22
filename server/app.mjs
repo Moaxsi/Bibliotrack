@@ -2,8 +2,9 @@ import { database } from './db.mjs';
 import { authenticate, login, userSelect } from './auth.mjs';
 import { catalog, deleteBook, getBook, saveBook } from './catalog.mjs';
 import { saveUser, userView } from './users.mjs';
-import { registerSale, saleDetail, saleView } from './sales.mjs';
+import { decideYapeSale, registerSale, saleDates, saleDetail, saleView } from './sales.mjs';
 import { readImage, uploadImage } from './images.mjs';
+import { lookupDocument } from './documents.mjs';
 import { email, fail, integer, text } from './rules.mjs';
 
 const json = (value, status = 200) => Response.json(value, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
@@ -42,7 +43,7 @@ export function createApp(getDb = database) {
         await db.query('INSERT INTO contacto (nombre,email,asunto,mensaje) VALUES ($1,$2,$3,$4)', [text(data, 'nombre', 100), email(data), text(data, 'asunto', 200), text(data, 'mensaje', 10000)]);
         return json({ mensaje: 'Mensaje recibido correctamente. Te responderemos a la brevedad.' });
       }
-      const own = route === 'mis-compras' || /^mis-compras\/\d+\/detalle$/.test(route) || route === 'ventas' && method === 'POST';
+      const own = route === 'mis-compras' || /^mis-compras\/\d+\/detalle$/.test(route) || ['ventas', 'documento'].includes(route) && method === 'POST';
       const user = await authenticate(db, request, !own);
       if (route === 'libros/imagen' && method === 'POST') return json(await uploadImage(db, request));
       if (route === 'libros' && method === 'POST') return json(await saveBook(db, null, await body()));
@@ -61,9 +62,14 @@ export function createApp(getDb = database) {
       if (route === 'roles' && method === 'GET') return json((await db.query('SELECT id_rol AS "idRol",nombre,descripcion FROM roles ORDER BY id_rol')).rows);
       if (route === 'usuarios' && method === 'POST') return json(await saveUser(db, null, await body(), user.id_usuario));
       if (/^usuarios\/\d+$/.test(route) && method === 'PUT') return json(await saveUser(db, integer(route.split('/')[1], 'idUsuario'), await body(), user.id_usuario));
+      if (route === 'documento' && method === 'POST') return json(await lookupDocument(await body()));
+      if (/^ventas\/\d+\/estado$/.test(route) && method === 'PATCH') {
+        const id = integer(route.split('/')[1], 'idVenta');
+        return json(await decideYapeSale(db, id, (await body()).estado));
+      }
       if (route === 'ventas' && method === 'POST') return json(await registerSale(db, await body(), user));
-      if (route === 'ventas' && method === 'GET') return json((await db.query('SELECT v.*,u.nombre AS cliente_nombre,u.email AS cliente_email FROM ventas v JOIN usuarios u USING (id_usuario) ORDER BY v.id_venta DESC')).rows.map(saleView));
-      if (route === 'mis-compras' && method === 'GET') return json((await db.query('SELECT * FROM ventas WHERE id_usuario=$1 ORDER BY id_venta DESC', [user.id_usuario])).rows.map(saleView));
+      if (route === 'ventas' && method === 'GET') return json((await db.query(`SELECT v.*,${saleDates},u.nombre AS cliente_nombre,u.email AS cliente_email FROM ventas v JOIN usuarios u USING (id_usuario) ORDER BY v.id_venta DESC`)).rows.map(saleView));
+      if (route === 'mis-compras' && method === 'GET') return json((await db.query(`SELECT *,${saleDates} FROM ventas WHERE id_usuario=$1 ORDER BY id_venta DESC`, [user.id_usuario])).rows.map(saleView));
       if (/^(ventas|mis-compras)\/\d+\/detalle$/.test(route) && method === 'GET') {
         const id = integer(route.split('/')[1], 'idVenta');
         if (route.startsWith('mis-compras/') && !(await db.query('SELECT 1 FROM ventas WHERE id_venta=$1 AND id_usuario=$2', [id, user.id_usuario])).rowCount) fail('Compra no encontrada', 404);

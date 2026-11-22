@@ -8,7 +8,10 @@ export async function solicitar(ruta, opciones = {}, lector = fetch) {
     throw new Error('Tu sesión terminó. Inicia sesión nuevamente.');
   }
   const datos = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(datos.error || (response.status === 403 ? 'No tienes permiso para esta operación.' : 'No se pudo completar la operación. Vuelve a intentarlo.'));
+  if (!response.ok) {
+    const mensaje = datos.error || (response.status === 403 ? 'No tienes permiso para esta operación.' : 'No se pudo completar la operación. Vuelve a intentarlo.');
+    throw Object.assign(new Error(mensaje), { status: response.status });
+  }
   return datos;
 }
 

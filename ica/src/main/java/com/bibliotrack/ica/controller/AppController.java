@@ -193,8 +193,27 @@ public class AppController {
     }
 
     @GetMapping("/mis-compras")
-    public List<Venta> misCompras(@AuthenticationPrincipal Jwt jwt) {
-        return ventaRepository.findByIdUsuarioOrderByIdVentaDesc(Integer.valueOf(jwt.getClaimAsString("idUsuario")));
+    public List<Map<String, Object>> misCompras(@AuthenticationPrincipal Jwt jwt) {
+        return ventaRepository.findByIdUsuarioOrderByIdVentaDesc(Integer.valueOf(jwt.getClaimAsString("idUsuario")))
+                .stream().map(this::vistaVenta).toList();
+    }
+
+    @PatchMapping("/ventas/{idVenta}/estado")
+    public Map<String, Object> cambiarEstadoVenta(@PathVariable Integer idVenta, @RequestBody Map<String, String> datos) {
+        return ventaService.decidirYape(idVenta, datos.get("estado"));
+    }
+
+    private Map<String, Object> vistaVenta(Venta venta) {
+        Map<String, Object> item = new HashMap<>();
+        item.put("idVenta", venta.getIdVenta());
+        item.put("idUsuario", venta.getIdUsuario());
+        item.put("fecha", venta.getFecha());
+        item.put("total", venta.getTotal());
+        item.put("metodoPago", venta.getMetodoPago());
+        item.put("tipoComprobante", venta.getTipoComprobante());
+        item.put("estado", ventaService.estadoVisible(venta));
+        if (venta.getVencePago() != null) item.put("vencePago", venta.getVencePago());
+        return item;
     }
 
     @GetMapping("/mis-compras/{idVenta}/detalle")
@@ -211,13 +230,9 @@ public class AppController {
         List<Map<String, Object>> respuesta = new ArrayList<>();
 
         for (Venta v : ventas) {
-            Map<String, Object> item = new HashMap<>();
-            item.put("idVenta", v.getIdVenta());
-            item.put("fecha", v.getFecha());
-            item.put("total", v.getTotal());
-            item.put("metodoPago", v.getMetodoPago());
-            item.put("tipoComprobante", v.getTipoComprobante());
-            item.put("estado", v.getEstado());
+            Map<String, Object> item = vistaVenta(v);
+            item.put("documentoComprobante", v.getDocumentoComprobante());
+            item.put("nombreComprobante", v.getNombreComprobante());
 
             usuarioRepository.findById(v.getIdUsuario()).ifPresent(u -> {
                 item.put("clienteNombre", u.getNombre());

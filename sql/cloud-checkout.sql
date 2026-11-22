@@ -1,0 +1,5 @@
+BEGIN;
+ALTER TABLE ventas
+  ADD COLUMN IF NOT EXISTS documento_comprobante VARCHAR(11),
+  ADD COLUMN IF NOT EXISTS nombre_comprobante VARCHAR(200);
+COMMIT;

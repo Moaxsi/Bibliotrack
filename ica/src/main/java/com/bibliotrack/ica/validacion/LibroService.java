@@ -1,6 +1,7 @@
 package com.bibliotrack.ica.validacion;
 
 import com.bibliotrack.ica.modelo.Libro;
+import com.bibliotrack.ica.modelo.Venta;
 import com.bibliotrack.ica.repositorio.CategoriaRepository;
 import com.bibliotrack.ica.repositorio.LibroRepository;
 import com.bibliotrack.ica.repositorio.DetalleVentaRepository;
@@ -45,6 +46,13 @@ public class LibroService {
         if (datos.containsKey("descripcion")) libro.setDescripcion(opcional(datos, "descripcion", 10000));
         if (datos.containsKey("urlPortada")) libro.setUrlPortada(opcional(datos, "urlPortada", 500));
         if (id == null || datos.containsKey("estado")) libro.setEstado(estado(datos.getOrDefault("estado", "Activo")));
+        if (id != null && (datos.containsKey("stock") || datos.containsKey("estado"))) {
+            long reservas = detalles.unidadesReservadas(id, Venta.horaLima().minusHours(24));
+            if (reservas > 0 && (libro.getStock() < reservas || !"Activo".equals(libro.getEstado()))) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Hay " + reservas
+                        + " unidades reservadas por Yape. Confirma o rechaza esos pedidos antes de cambiar la disponibilidad.");
+            }
+        }
         return libros.saveAndFlush(libro);
     }
 

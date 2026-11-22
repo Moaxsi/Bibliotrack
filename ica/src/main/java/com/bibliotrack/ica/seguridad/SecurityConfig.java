@@ -103,7 +103,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/login", "/api/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categorias", "/api/libros", "/api/libros/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contacto").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/ventas").hasAnyRole("CLIENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/ventas", "/api/documento").hasAnyRole("CLIENTE", "ADMIN")
                         .requestMatchers("/api/mis-compras", "/api/mis-compras/**").hasAnyRole("CLIENTE", "ADMIN")
                         .requestMatchers("/api/usuarios", "/api/usuarios/**", "/api/roles").hasRole("ADMIN")
                         .requestMatchers("/api/ventas/**").hasRole("ADMIN")

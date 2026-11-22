@@ -16,13 +16,12 @@
 <link rel="stylesheet" href="/frontend/compartido/css/requisitos.css">
   <script type="module" src="/frontend/compartido/js/navegacion.js"></script>
 </head><body><a class="skip-link" href="#contenido">Ir al contenido</a><header class="main-navbar"><div class="navbar-container"><a class="navbar-brand" href="/frontend/usuario/productos.html"><span class="brand-symbol"><img class="brand-logo brand-logo-light" src="/frontend/compartido/imagenes/logo_blanco.png" alt="" width="56" height="50"><img class="brand-logo brand-logo-dark" src="/frontend/compartido/imagenes/logo_oscuro.png" alt="" width="56" height="50"></span><span class="brand-copy"><strong>BiblioTrack</strong><small>Tu siguiente historia.</small></span></a><nav class="navbar-links" aria-label="Navegación principal"><a href="/frontend/usuario/productos.html" class="nav-link"  >Catálogo</a><a href="/frontend/usuario/historial.html" class="nav-link">Historial</a><a href="/frontend/usuario/contacto.html" class="nav-link"  >Contacto</a><a href="/frontend/admin/admin.html" class="nav-link admin-only-link" hidden >Inventario</a><a href="/frontend/admin/ventas.html" class="nav-link admin-only-link" hidden >Reporte</a><a href="/frontend/admin/usuarios.html" class="nav-link admin-only-link" hidden>Usuarios</a></nav><div class="navbar-user-actions"><button type="button" class="theme-toggle" aria-label="Activar tema oscuro" aria-pressed="false" title="Cambiar tema"><span class="theme-orbit"><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.5A8.5 8.5 0 0 1 10.5 3a8.5 8.5 0 1 0 10 10.5Z"/></svg></span></button><a href="/frontend/usuario/carrito.html" class="btn-cart-link" aria-label="Ver carrito"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h2l2 11h10l2-8H7"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-label">Carrito</span><span id="cart-counter" class="cart-counter">0</span></a><div id="auth-buttons-wrapper"></div></div></div></header>  <main id="contenido" class="page-container cart-page-container">
-    <div class="cart-header-title" data-reveal>
-      <div class="eyebrow">YA CASI SON TUYOS</div><h1>Tu próxima lectura te espera.</h1>
-      <p>Revisa tus libros seleccionados antes de completar el pedido.</p>
-    </div>
-
     <div class="cart-classic-layout">
       <section class="cart-items-section">
+        <div class="cart-header-title" data-reveal>
+          <div class="eyebrow">YA CASI SON TUYOS</div><h1>Tu próxima lectura te espera.</h1>
+          <p>Revisa tus libros seleccionados antes de completar el pedido.</p>
+        </div>
         <div class="cart-table-card" data-reveal tabindex="0" role="region" aria-label="Libros del carrito, desplaza para ver todas las columnas">
           <table class="cart-table">
             <thead>
@@ -48,9 +47,9 @@
         </div>
       </section>
 
-      <aside class="cart-summary-section">
+      <aside class="cart-summary-section" aria-labelledby="cart-summary-title">
         <div class="cart-summary-card" data-reveal>
-          <h3>Resumen del Pedido</h3>
+          <h2 id="cart-summary-title">Resumen del Pedido</h2>
           
           <div class="summary-breakdown">
             <div class="summary-line-item">
@@ -67,28 +66,72 @@
             </div>
           </div>
 
+          <form id="checkout-form" autocomplete="off">
           <div class="checkout-fields-group">
             <div class="checkout-field">
               <label for="order-metodo-pago">Método de Pago</label>
               <select id="order-metodo-pago">
                 <option value="Efectivo">Efectivo</option>
-                <option value="Tarjeta">Tarjeta de Débito / Crédito</option>
+                <option value="Tarjeta">Tarjeta</option>
                 <option value="Yape">Yape / QR</option>
               </select>
             </div>
 
+            <fieldset class="checkout-panel" id="checkout-card" data-private-fields hidden disabled>
+              <legend class="sr-only">Tarjeta</legend>
+              <div class="checkout-field">
+                <label for="card-number">Número de tarjeta</label>
+                <div class="checkout-card-number">
+                  <input id="card-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" autocomplete="off" required>
+                  <span id="card-brand" class="checkout-card-brand" role="status">
+                    <img src="/frontend/compartido/imagenes/visa.svg" alt="Visa" hidden>
+                    <img src="/frontend/compartido/imagenes/mastercard.svg" alt="Mastercard" hidden>
+                  </span>
+                </div>
+              </div>
+              <div class="checkout-field">
+                <label for="card-holder">Titular</label>
+                <input id="card-holder" type="text" placeholder="Nombre y apellido" readonly>
+              </div>
+              <div class="checkout-card-pair">
+                <div class="checkout-field">
+                  <label for="card-expiry">Vencimiento</label>
+                  <input id="card-expiry" type="text" placeholder="MM/AA" readonly>
+                </div>
+                <div class="checkout-field">
+                  <label for="card-cvv">CVV</label>
+                  <input id="card-cvv" type="password" placeholder="000" readonly>
+                </div>
+              </div>
+            </fieldset>
+            <p class="checkout-hint" id="checkout-yape-hint" hidden>Te mostraremos el QR al registrar el pedido. El administrador confirmará el pago.</p>
+
             <div class="checkout-field">
               <label for="order-tipo-comprobante">Tipo de Comprobante</label>
               <select id="order-tipo-comprobante">
-                <option value="Boleta">Boleta de Venta</option>
+                <option value="Boleta">Boleta simple</option>
+                <option value="Boleta de venta">Boleta de venta</option>
                 <option value="Factura">Factura</option>
               </select>
             </div>
+
+            <fieldset class="checkout-panel" id="checkout-document" data-private-fields hidden disabled>
+              <legend class="sr-only">Datos del comprobante</legend>
+              <div class="checkout-field">
+                <label for="receipt-document" id="receipt-document-label">DNI</label>
+                <input id="receipt-document" type="text" inputmode="numeric" autocomplete="off" placeholder="8 dígitos" aria-describedby="receipt-feedback" required>
+                <p class="checkout-hint" id="receipt-feedback" role="status"></p>
+              </div>
+              <div class="checkout-field">
+                <label for="receipt-name" id="receipt-name-label">Nombre completo</label>
+                <input id="receipt-name" type="text" maxlength="200" autocomplete="off" readonly placeholder="Se completa automáticamente" aria-describedby="receipt-feedback">
+              </div>
+            </fieldset>
           </div>
 
-          <button type="button" class="btn-checkout-action" id="btn-procesar-compra" onclick="ejecutarCompraFinal()">
-            Procesar Compra
-          </button>
+          <p id="checkout-error" class="checkout-error" role="alert" tabindex="-1" hidden></p>
+          <button type="submit" class="btn-checkout-action" id="btn-procesar-compra">Procesar compra</button>
+          </form>
         </div>
       </aside>
     </div>

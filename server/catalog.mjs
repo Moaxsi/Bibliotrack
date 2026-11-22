@@ -1,5 +1,6 @@
 import { cents, choice, fail, integer, optional, text } from './rules.mjs';
 import { transaction } from './db.mjs';
+import { reservedCopies } from './sales.mjs';
 
 export const bookSelect = `SELECT l.*, c.nombre AS categoria_nombre, c.descripcion AS categoria_descripcion FROM libros l JOIN categorias c USING (id_categoria)`;
 export function book(row) {
@@ -46,6 +47,12 @@ export async function saveBook(db, id, data) {
       if (values.url_portada && !/^(?:https:\/\/|\/(?!\/))/.test(values.url_portada)) fail('urlPortada: usa una imagen HTTPS o una ruta local');
     }
     if (!id || 'estado' in data) values.estado = choice(data.estado ?? 'Activo', ['Activo', 'Inactivo'], 'estado');
+    if (id && ('stock' in data || 'estado' in data)) {
+      const reserved = (await reservedCopies(client, [id])).get(id) || 0;
+      if (reserved && (values.stock < reserved || values.estado !== 'Activo')) {
+        fail(`Hay ${reserved} unidades reservadas por Yape. Confirma o rechaza esos pedidos antes de cambiar la disponibilidad.`, 409);
+      }
+    }
     const keys = ['id_categoria', 'isbn', 'titulo', 'autor', 'descripcion', 'precio_venta', 'stock', 'url_portada', 'estado'];
     const args = keys.map(key => values[key] ?? null);
     let result;

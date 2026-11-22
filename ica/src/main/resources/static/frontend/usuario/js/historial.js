@@ -1,4 +1,5 @@
 import { alMontarPagina } from '../../compartido/js/pagina.js';
+import { claseEstado, mostrarPagoYape } from '../../compartido/js/estados-venta.js';
 import { sesion } from '../../compartido/js/comun.js';
 import { solicitar, fechaCompra } from '../../compartido/js/api.js';
 import { animarEntrada, escapar, moneda } from '../../compartido/js/interfaz.js';
@@ -18,7 +19,7 @@ alMontarPagina('#history-list', vista => {
     if (!filtradas.length) lista.innerHTML = `<div class="empty-state-card"><strong>${compras.length ? 'No hay compras con esos filtros.' : 'Tu primera historia está por llegar.'}</strong><p>${compras.length ? 'Prueba con otro código o estado.' : 'Cuando completes una compra, podrás consultar aquí sus libros y cantidades.'}</p>${compras.length ? '' : '<a class="btn-secondary" href="/frontend/usuario/productos.html">Explorar el catálogo</a>'}</div>`;
     filtradas.slice(pagina * 8, (pagina + 1) * 8).forEach(compra => {
       const id = compra.idVenta, card = document.createElement('article'); card.className = 'history-order';
-      card.innerHTML = `<div class="history-order-head"><div class="history-order-title"><h3>Compra #V-${String(id).padStart(4, '0')}</h3><p>${escapar(fechaCompra(compra.fecha))} · ${escapar(compra.metodoPago)} · ${escapar(compra.tipoComprobante)}</p></div><div class="history-order-actions"><span class="status-tag ${compra.estado === 'Completada' ? 'activo' : 'inactivo'}">${escapar(compra.estado)}</span><strong>${escapar(moneda(compra.total))}</strong><button type="button" class="btn-action-edit" aria-expanded="false" aria-controls="purchase-${id}">Ver libros</button></div></div><div id="purchase-${id}" class="history-detail" hidden></div>`;
+      card.innerHTML = `<div class="history-order-head"><div class="history-order-title"><h3>Compra #V-${String(id).padStart(4, '0')}</h3><p>${escapar(fechaCompra(compra.fecha))} · ${escapar(compra.metodoPago)} · ${escapar(compra.tipoComprobante)}</p></div><div class="history-order-actions"><span class="status-tag ${claseEstado(compra.estado)}">${escapar(compra.estado)}</span><strong>${escapar(moneda(compra.total))}</strong><button type="button" class="btn-action-edit" aria-expanded="false" aria-controls="purchase-${id}">Ver libros</button></div></div><div id="purchase-${id}" class="history-detail" hidden></div>`;
       const button = card.querySelector('button'), detail = card.querySelector('.history-detail');
       let solicitudDetalle = 0;
       button.addEventListener('click', async () => {
@@ -34,6 +35,17 @@ alMontarPagina('#history-list', vista => {
           animarEntrada(detail.children);
         } catch (error) { if (!vista.signal.aborted) detail.innerHTML = `<p class="requirements-feedback" role="alert">${escapar(error.message)} Cierra y vuelve a abrir el detalle para reintentar.</p>`; }
       });
+      if (compra.estado === 'Pendiente' && compra.metodoPago === 'Yape' && compra.vencePago) {
+        const qr = document.createElement('button');
+        qr.type = 'button';
+        qr.className = 'btn-action-edit';
+        qr.textContent = 'Ver QR';
+        qr.addEventListener('click', () => {
+          if (new Date(`${compra.vencePago}-05:00`) <= new Date()) cargar();
+          else mostrarPagoYape(compra);
+        });
+        card.querySelector('.history-order-actions').insertBefore(qr, button);
+      }
       lista.appendChild(card);
     });
     document.getElementById('history-page').textContent = filtradas.length ? `${pagina * 8 + 1}–${Math.min((pagina + 1) * 8, filtradas.length)} de ${filtradas.length} ${filtradas.length === 1 ? 'compra' : 'compras'}` : 'Sin compras para mostrar';
@@ -48,7 +60,7 @@ alMontarPagina('#history-list', vista => {
       if (vista.signal.aborted || request !== peticion) return;
       compras = datos; detalles.clear();
       document.getElementById('history-count').textContent = compras.length;
-      document.getElementById('history-total').textContent = moneda(compras.filter(c => c.estado === 'Completada').reduce((total, c) => total + Number(c.total), 0));
+      document.getElementById('history-total').textContent = moneda(compras.filter(c => ['Completada', 'Confirmada'].includes(c.estado)).reduce((total, c) => total + Number(c.total), 0));
       document.getElementById('history-latest').textContent = compras.length ? new Date(compras[0].fecha).toLocaleDateString('es-PE') : 'Aún no hay compras';
       render();
     } catch (error) {

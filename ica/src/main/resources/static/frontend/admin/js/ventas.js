@@ -1,7 +1,9 @@
 import './registrar-venta.js';
 import { alMontarPagina } from '../../compartido/js/pagina.js';
-import { API_URL, requiereAdmin, fetchConToken, limpiarSesion } from '../../compartido/js/comun.js';
+import { API_URL, requiereAdmin, fetchConToken, limpiarSesion, notificar } from '../../compartido/js/comun.js';
 import { animarEntrada, animarNumero, detenerNumero, movimientoReducido, moneda, escapar, abrirModal, cerrarModal } from '../../compartido/js/interfaz.js';
+import { solicitar, fechaCompra } from '../../compartido/js/api.js';
+import { claseEstado } from '../../compartido/js/estados-venta.js';
 import { calcularReporte, csvVentas } from './estadisticas.js';
 
 alMontarPagina('#sales-table-body', (vista) => {
@@ -118,17 +120,59 @@ alMontarPagina('#sales-table-body', (vista) => {
     if (!shown.length) tabla.innerHTML = `<tr><td colspan="8" class="empty-table-cell">${query ? 'No hay ventas que coincidan con tu búsqueda.' : 'Todavía no hay ventas en este período.'}</td></tr>`;
     shown.forEach(v => {
       const codigo = `#V-${String(v.idVenta).padStart(4, '0')}`, tr = document.createElement('tr');
-      tr.innerHTML = `<td><strong>${escapar(codigo)}</strong></td><td>${escapar(fecha(v.fechaDate))}</td><td>${escapar(v.clienteNombre || 'Cliente general')}</td><td>${escapar(v.tipoComprobante || 'Boleta')}</td><td><span class="payment-tag">${escapar(v.metodoPago || 'Sin especificar')}</span></td><td><strong>${escapar(moneda(v.total))}</strong></td><td><span class="status-tag ${String(v.estado).toLowerCase() === 'completada' ? 'activo' : 'inactivo'}">${escapar(v.estado || 'Sin estado')}</span></td><td><button type="button" class="btn-action-edit" aria-label="Ver detalle de ${escapar(codigo)}">Ver detalle</button></td>`;
+      tr.innerHTML = `<td><strong>${escapar(codigo)}</strong></td><td>${escapar(fecha(v.fechaDate))}</td><td>${escapar(v.clienteNombre || 'Cliente general')}</td><td>${escapar(v.tipoComprobante || 'Boleta')}</td><td><span class="payment-tag">${escapar(v.metodoPago || 'Sin especificar')}</span></td><td><strong>${escapar(moneda(v.total))}</strong></td><td><span class="status-tag ${claseEstado(v.estado)}">${escapar(v.estado || 'Sin estado')}</span></td><td><button type="button" class="btn-action-edit" aria-label="Ver detalle de ${escapar(codigo)}">${v.estado === 'Pendiente' && v.metodoPago === 'Yape' ? 'Revisar pago' : 'Ver detalle'}</button></td>`;
       tr.querySelector('button').addEventListener('click', () => verDetalle(v, codigo)); tabla.appendChild(tr);
     });
     document.getElementById('report-page-info').textContent = filtered.length ? `${pagina * perPage + 1}–${Math.min((pagina + 1) * perPage, filtered.length)} de ${filtered.length}` : 'Sin resultados';
     document.getElementById('report-prev').disabled = pagina === 0; document.getElementById('report-next').disabled = pagina === pages - 1;
     animarEntrada(shown.length ? tabla.children : []);
   }
+  const accionesYape = document.getElementById('sale-yape-actions');
+  const decisiones = [...accionesYape.querySelectorAll('[data-decision]')];
+  const respuestaYape = document.getElementById('sale-yape-feedback');
+  let revisando;
+
+  decisiones.forEach(button => button.addEventListener('click', async () => {
+    const venta = revisando;
+    if (!venta) return;
+    const request = detalleSolicitud;
+    respuestaYape.hidden = true;
+    decisiones.forEach(el => { el.disabled = true; });
+    try {
+      const { estado } = await solicitar(`ventas/${venta.idVenta}/estado`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: button.dataset.decision })
+      }, vista.fetch);
+      if (vista.signal.aborted) return;
+      if (request === detalleSolicitud) window.cerrarModalDetalleVenta();
+      await cargar();
+      if (!vista.signal.aborted) notificar(estado === 'Confirmada' ? 'Pago de Yape confirmado.' : 'Pedido de Yape rechazado.');
+    } catch (error) {
+      if (vista.signal.aborted || request !== detalleSolicitud) return;
+      respuestaYape.hidden = false;
+      respuestaYape.dataset.error = '';
+      respuestaYape.textContent = error.message;
+    } finally {
+      if (request === detalleSolicitud) decisiones.forEach(el => { el.disabled = false; });
+    }
+  }));
+
   async function verDetalle(venta, codigo) {
     const request = ++detalleSolicitud, container = document.getElementById('sale-detail-items-wrapper');
     document.getElementById('modal-venta-title').textContent = `Detalle de ${codigo}`; document.getElementById('modal-venta-total-val').textContent = moneda(venta.total);
-    container.innerHTML = '<p class="empty-table-cell">Cargando los libros de esta compra…</p>'; abrirModal('modal-detalle-venta');
+    const puedeRevisar = venta.metodoPago === 'Yape' && venta.estado === 'Pendiente';
+    revisando = puedeRevisar ? venta : undefined;
+    accionesYape.hidden = !puedeRevisar;
+    decisiones.forEach(el => { el.disabled = false; });
+    respuestaYape.hidden = true;
+    document.getElementById('sale-yape-help').textContent = puedeRevisar
+      ? `Verifica el abono en Yape antes de confirmar. Plazo: ${fechaCompra(venta.vencePago)} (hora de Lima).` : '';
+    const comprobante = document.getElementById('sale-receipt-info');
+    comprobante.hidden = !venta.documentoComprobante;
+    comprobante.textContent = venta.documentoComprobante
+      ? `${venta.tipoComprobante === 'Factura' ? 'RUC' : 'DNI'} ${venta.documentoComprobante} · ${venta.nombreComprobante}` : '';
+    container.innerHTML = '<p class="empty-table-cell">Cargando los libros de esta compra…</p>';
+    abrirModal('modal-detalle-venta');
     try {
       const items = await leer(`${API_URL}/ventas/${encodeURIComponent(venta.idVenta)}/detalle`);
       if (vista.signal.aborted || request !== detalleSolicitud) return;
@@ -136,7 +180,7 @@ alMontarPagina('#sales-table-body', (vista) => {
       animarEntrada(container.children);
     } catch (error) { if (!vista.signal.aborted && request === detalleSolicitud) container.innerHTML = `<p class="empty-table-cell">${escapar(error.message)}</p>`; }
   }
-  window.cerrarModalDetalleVenta = () => { ++detalleSolicitud; cerrarModal('modal-detalle-venta'); };
+  window.cerrarModalDetalleVenta = () => { ++detalleSolicitud; revisando = undefined; cerrarModal('modal-detalle-venta'); };
   document.querySelectorAll('[data-period]').forEach(button => button.addEventListener('click', () => {
     periodo = button.dataset.period;
     document.querySelectorAll('[data-period]').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
