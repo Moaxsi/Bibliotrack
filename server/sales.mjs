@@ -13,7 +13,8 @@ export const saleView = row => ({
   ...(row.metodo_pago === 'Yape' && row.estado === 'Pendiente' ? { vencePago: row.vence_yape } : {}),
   ...(row.cliente_nombre ? {
     clienteNombre: row.cliente_nombre, clienteEmail: row.cliente_email,
-    documentoComprobante: row.documento_comprobante, nombreComprobante: row.nombre_comprobante
+    documentoComprobante: row.documento_comprobante, nombreComprobante: row.nombre_comprobante,
+    nombrePagadorYape: row.nombre_pagador_yape
   } : {})
 });
 export async function saleDetail(db, id) {
@@ -35,6 +36,7 @@ export async function registerSale(db, data, user) {
   if ('idCliente' in data && !admin) fail('Solo un administrador puede registrar ventas para otro cliente', 403);
   const clientId = 'idCliente' in data ? integer(data.idCliente, 'idCliente') : user.id_usuario;
   const payment = choice(data.metodoPago ?? 'Efectivo', ['Efectivo', 'Tarjeta', 'Yape', 'Plin', 'Transferencia'], 'metodoPago');
+  const payerName = payment === 'Yape' && !admin ? text(data, 'nombrePagadorYape', 120) : null;
   const receipt = choice(data.tipoComprobante ?? 'Boleta', ['Boleta', 'Boleta de venta', 'Factura'], 'tipoComprobante');
   let document = null;
   let receiptName = null;
@@ -69,10 +71,14 @@ export async function registerSale(db, data, user) {
       total += cents(book.precio_venta) * amounts.get(book.id_libro);
     }
     if (!Number.isSafeInteger(total) || total <= 0 || total > 9999999999) fail('total: el importe es demasiado grande');
+    const values = [clientId, (total / 100).toFixed(2), payment, receipt, estado, document, receiptName];
+    const yapeColumn = payerName === null ? '' : ',nombre_pagador_yape';
+    const yapeValue = payerName === null ? '' : ',$8';
+    if (payerName !== null) values.push(payerName);
     const { rows: [sale] } = await client.query(
-      `INSERT INTO ventas (id_usuario,fecha,total,metodo_pago,tipo_comprobante,estado,documento_comprobante,nombre_comprobante)
-       VALUES ($1,statement_timestamp() AT TIME ZONE 'America/Lima',$2,$3,$4,$5,$6,$7) RETURNING id_venta, ${saleDates}`,
-      [clientId, (total / 100).toFixed(2), payment, receipt, estado, document, receiptName]
+      `INSERT INTO ventas (id_usuario,fecha,total,metodo_pago,tipo_comprobante,estado,documento_comprobante,nombre_comprobante${yapeColumn})
+       VALUES ($1,statement_timestamp() AT TIME ZONE 'America/Lima',$2,$3,$4,$5,$6,$7${yapeValue}) RETURNING id_venta, ${saleDates}`,
+      values
     );
     for (const book of books) {
       const quantity = amounts.get(book.id_libro);

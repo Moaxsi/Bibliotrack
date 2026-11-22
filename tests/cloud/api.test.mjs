@@ -24,6 +24,7 @@ before(async () => {
   db = new pg.Pool({ ...config, database: name, options: '-c timezone=UTC' });
   await db.query(await readFile(new URL('../../ica/sql/migracion_01_implementacionBD.sql', import.meta.url), 'utf8'));
   await db.query(await readFile(new URL('../../sql/cloud-checkout.sql', import.meta.url), 'utf8'));
+  await db.query(await readFile(new URL('../../sql/migracion_nombre_pagador_yape.sql', import.meta.url), 'utf8'));
   // Roles anon/authenticated are Supabase-specific, so use only the table definition locally.
   const images = await readFile(new URL('../../sql/cloud-portadas.sql', import.meta.url), 'utf8');
   await db.query(images.slice(0, images.indexOf('REVOKE')));
@@ -104,7 +105,7 @@ test('Yape reserves the book until an administrator confirms, rejects or the dea
     "INSERT INTO libros (id_categoria,isbn,titulo,autor,precio_venta,stock,estado) VALUES (1,'9789999999993','Yape de prueba','Pruebas',12.50,2,'Activo') RETURNING id_libro"
   );
   const items = [{ idLibro: book.id_libro, cantidad: 1 }];
-  const order = (metodoPago = 'Yape') => call('ventas', { method: 'POST', token: clientToken, body: { metodoPago, items } });
+  const order = (metodoPago = 'Yape') => call('ventas', { method: 'POST', token: clientToken, body: { metodoPago, items, ...(metodoPago === 'Yape' ? { nombrePagadorYape: 'Cliente de prueba' } : {}) } });
   const decide = (id, estado, token = adminToken) => call(`ventas/${id}/estado`, { method: 'PATCH', token, body: { estado } });
   const stock = async () => (await db.query('SELECT stock FROM libros WHERE id_libro=$1', [book.id_libro])).rows[0].stock;
   const first = await order();
@@ -112,6 +113,7 @@ test('Yape reserves the book until an administrator confirms, rejects or the dea
   assert.equal(first.status, 200);
   assert.equal(second.status, 200);
   assert.equal(first.data.estado, 'Pendiente');
+  assert.equal((await call('ventas', { token: adminToken })).data.find(v => v.idVenta === first.data.idVenta).nombrePagadorYape, 'Cliente de prueba');
   assert.ok(first.data.vencePago);
   assert.equal(await stock(), 2);
   assert.equal((await order('Efectivo')).status, 400);

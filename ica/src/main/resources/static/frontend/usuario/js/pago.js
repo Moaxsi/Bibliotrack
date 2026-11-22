@@ -32,6 +32,9 @@ export function configurarPago(lector) {
   function actualizarPago() {
     tarjeta.hidden = tarjeta.disabled = metodo.value !== 'Tarjeta';
     campo('checkout-yape-hint').hidden = metodo.value !== 'Yape';
+    const yapeNombre = campo('checkout-yape-name');
+    yapeNombre.hidden = metodo.value !== 'Yape';
+    campo('yape-payer-name').disabled = yapeNombre.hidden;
     if (tarjeta.hidden) {
       mostrarTarjeta('');
       titular.value = '';
@@ -150,6 +153,7 @@ export function configurarPago(lector) {
       return {
         metodoPago: metodo.value,
         tipoComprobante: comprobante.value,
+        ...(metodo.value === 'Yape' ? { nombrePagadorYape: campo('yape-payer-name').value.trim() } : {}),
         ...(!documento.hidden ? { documentoComprobante: identificador.value, nombreComprobante: nombre.value.trim() } : {})
       };
     },

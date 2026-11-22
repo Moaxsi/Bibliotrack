@@ -163,6 +163,9 @@ alMontarPagina('#sales-table-body', (vista) => {
     const puedeRevisar = venta.metodoPago === 'Yape' && venta.estado === 'Pendiente';
     revisando = puedeRevisar ? venta : undefined;
     accionesYape.hidden = !puedeRevisar;
+    const pagadorYape = document.getElementById('sale-yape-payer');
+    pagadorYape.hidden = !puedeRevisar || !venta.nombrePagadorYape;
+    pagadorYape.textContent = venta.nombrePagadorYape ? `Nombre indicado para Yape: ${venta.nombrePagadorYape}` : '';
     decisiones.forEach(el => { el.disabled = false; });
     respuestaYape.hidden = true;
     document.getElementById('sale-yape-help').textContent = puedeRevisar
